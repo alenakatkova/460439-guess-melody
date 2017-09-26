@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алёна Колпакова](https://up.htmlacademy.ru/ecmascript/3/user/460439).
-* Наставник: `Неизвестно`.
+* Наставник: [Никита Ткачук](https://up.htmlacademy.ru/ecmascript/3/user/450211).
 
 ---
 
