@@ -13,6 +13,9 @@
     `#attempts-out`
   ];
 
+  const container = document.querySelector(`.main`);
+  let index = 0;
+
   /**
    * Функция генерирует массив экранов игры, отсортированных в порядке появления
    * @returns {Array} - Массив экранов
@@ -27,8 +30,6 @@
   };
 
   const screens = getScreensArray();
-
-  const container = document.querySelector(`.main`);
 
   /**
    * Функция отрисовывает экран в контейнер с классом .main
@@ -49,15 +50,12 @@
     container.removeChild(container.firstChild);
   };
 
-  let index = 0;
-  renderScreen(index);
-
   /**
    * Функция переключает экраны игры при нажатии Alt + -> и Alt + <-
    * Предыдущий отрисованный экран удаляется из контейнера
    */
 
-  function onDocumentPressAltArrow(evt) {
+  const onDocumentPressAltArrow = (evt) => {
     if (evt.altKey) {
       if (evt.keyCode === KEYCODES.LEFT_ARROW && index > 0) {
         hideScreen();
@@ -67,7 +65,8 @@
         renderScreen(++index);
       }
     }
-  }
+  };
 
-  document.addEventListener('keydown', onDocumentPressAltArrow);
+  renderScreen(index);
+  document.addEventListener(`keydown`, onDocumentPressAltArrow);
 })();
