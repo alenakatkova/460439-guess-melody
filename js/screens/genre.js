@@ -96,12 +96,15 @@ const markup = `<section class="main main--level main--level-genre" id="genre">
 
 const genreScreen = getElement(markup);
 const answerBtn = genreScreen.querySelector(`.genre-answer-send`);
-answerBtn.setAttribute(`disabled`, ``);
+answerBtn.disabled = true;
+const answers = [...genreScreen.querySelectorAll(`input[type=checkbox]`)];
 
-const answers = [...genreScreen.querySelectorAll('input[type=checkbox]')];
+/**
+ * Функция отключает кнопку "Ответить" в случае, если ни один из ответов не выбран
+ */
 
 const onAnswerClick = () => {
-  answerBtn.disabled = !answers.some((checkbox) => checkbox.checked);
+  answerBtn.disabled = !answers.some((answer) => answer.checked);
 };
 
 answers.forEach((answer) => {
@@ -109,12 +112,23 @@ answers.forEach((answer) => {
 });
 
 /**
- * Функция определяет действия для события 'click' на элементе playBtn
+ * Функция снимает галочки с чекбоксов
+ */
+
+const resetForm = () => answers.forEach((answer) => {
+  answer.checked = false;
+});
+
+/**
+ * Функция определяет действия для события 'click' на элементе playBtn:
+ * - сбрасываение полей формы
+ * - открытие экрана результатов
  * @param {Object} evt
  */
 
 const onAnswerBtnClick = (evt) => {
   evt.preventDefault();
+  resetForm();
   renderScreen(results[Math.floor(Math.random() * results.length)]);
 };
 

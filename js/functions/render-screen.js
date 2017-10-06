@@ -13,9 +13,7 @@ const renderScreen = (screen) => {
   if (container.firstChild) {
     container.removeChild(container.firstChild);
   }
-  let fragment = document.createDocumentFragment();
-  fragment.appendChild(screen);
-  container.appendChild(fragment);
+  container.appendChild(screen);
 };
 
 export default renderScreen;

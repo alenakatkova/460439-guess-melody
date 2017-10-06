@@ -1,13 +1,13 @@
 /**
  * @exports - функция, создающая DOM-элемент:
  * @param {String} markup - строка с разметкой DOM-элемента
- * @returns - клон узла с дочерними элементами
+ * @returns - DOM-элемент
  */
 
 const getElement = (markup) => {
-  const template = document.createElement(`template`);
-  template.innerHTML = markup;
-  return template.content.cloneNode(true);
+  const parser = new DOMParser();
+  const result = parser.parseFromString(markup, `text/html`);
+  return result.body.firstElementChild;
 };
 
 export default getElement;
