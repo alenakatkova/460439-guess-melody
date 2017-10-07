@@ -8,6 +8,7 @@ import renderScreen from '../functions/render-screen';
 import timeoutScreen from './timeout';
 import winScreen from './win';
 import attemptsScreen from './attempts-out';
+import getRandomInteger from '../util';
 
 const results = [winScreen, timeoutScreen, attemptsScreen];
 
@@ -104,7 +105,9 @@ const answers = [...genreScreen.querySelectorAll(`input[type=checkbox]`)];
  */
 
 const onAnswerClick = () => {
-  answerBtn.disabled = !answers.some((answer) => answer.checked);
+  answerBtn.disabled = !answers.some((answer) => {
+    return answer.checked;
+  });
 };
 
 answers.forEach((answer) => {
@@ -129,7 +132,7 @@ const resetForm = () => answers.forEach((answer) => {
 const onAnswerBtnClick = (evt) => {
   evt.preventDefault();
   resetForm();
-  renderScreen(results[Math.floor(Math.random() * results.length)]);
+  renderScreen(results[getRandomInteger(0, results.length - 1)]);
 };
 
 answerBtn.addEventListener(`click`, onAnswerBtnClick);

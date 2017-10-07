@@ -1,16 +1,7 @@
-(function () {
-  const KEYCODES = {
-    LEFT_ARROW: 37,
-    RIGHT_ARROW: 39
-  };
+const getRandomInteger = (min, max) => {
+  let RandomInteger = min + Math.random() * (max + 1 - min);
+  RandomInteger = Math.floor(RandomInteger);
+  return RandomInteger;
+};
 
-  window.util = {
-    isLeftArrowEvt: function (evt) {
-      return evt.altKey && evt.keyCode === KEYCODES.LEFT_ARROW;
-    },
-
-    isRightArrowEvt: function (evt) {
-      return evt.altKey && evt.keyCode === KEYCODES.RIGHT_ARROW;
-    }
-  };
-})();
+export default getRandomInteger;
