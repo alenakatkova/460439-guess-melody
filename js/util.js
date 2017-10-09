@@ -4,4 +4,8 @@ const getRandomInteger = (min, max) => {
   return randomInteger;
 };
 
-export default getRandomInteger;
+const isNumInBetweenMinMax = (num, min, max) => {
+  return num >= min && num <= max;
+};
+
+export {getRandomInteger, isNumInBetweenMinMax};

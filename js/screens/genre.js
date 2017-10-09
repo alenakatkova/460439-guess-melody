@@ -8,7 +8,7 @@ import renderScreen from '../functions/render-screen';
 import timeoutScreen from './timeout';
 import winScreen from './win';
 import attemptsScreen from './attempts-out';
-import getRandomInteger from '../util';
+import {getRandomInteger} from '../util';
 
 const results = [winScreen, timeoutScreen, attemptsScreen];
 
