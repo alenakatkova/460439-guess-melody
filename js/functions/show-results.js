@@ -27,10 +27,11 @@ const showResults = (allScores, playersResults) => {
 
   const currentScore = playersResults.score;
   allScores.push(currentScore);
-  allScores.sort(compareNumbers);
+  let scores = allScores.slice();
+  scores.sort(compareNumbers);
 
-  const i = allScores.indexOf(currentScore) + 1;
-  const t = allScores.length;
+  const i = scores.indexOf(currentScore) + 1;
+  const t = scores.length;
   let n = ((t - i) / t) * 100;
   n = n.toFixed();
 
