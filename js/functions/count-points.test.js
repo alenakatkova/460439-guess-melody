@@ -8,11 +8,11 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 13333},
       {isAnswerCorrect: false, time: 17666}
     ];
-    let attemptsLeft = 2;
+    let attemptsLeft = 3;
     assert.equal(countPoints(answers, attemptsLeft), -1);
 
     answers = [];
-    attemptsLeft = 3;
+    attemptsLeft = 4;
     assert.equal(countPoints(answers, attemptsLeft), -1);
 
     answers = [
