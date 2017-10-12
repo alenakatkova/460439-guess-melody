@@ -7,8 +7,8 @@ describe(`Функция создания таймера`, () => {
   });
 
   it(`уменьшит переданное значение времени на 1`, () => {
-    assert.equal(getTimer(30).tick().value, 30 - 1);
-    assert.equal(getTimer(516).tick().value, 516 - 1);
+    assert.equal(getTimer(30).tick().value, 29);
+    assert.equal(getTimer(516).tick().value, 515);
   });
 
   it(`будет уменьшать переданное значение на 1, пока оно не станет равным 0`, () => {
