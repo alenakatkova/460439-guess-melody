@@ -1,9 +1,9 @@
 import assert from 'assert';
-import {countPoints, minPoints, maxPoints, amountOfQuestions, minEarnedPoints, quickTime} from './count-points';
+import {countPoints, MIN_SCORE, MAX_SCORE, AMOUNT_OF_QUESTIONS, MIN_EARNED_POINTS, QUICK_TIME} from './count-points';
 import {isNumInBetweenMinMax} from '../util';
 
 describe(`Функция подсчета очков`, () => {
-  it(`должна вернуть -1, если игрок ответил меньше, чем на ${amountOfQuestions} вопросов`, () => {
+  it(`должна вернуть -1, если игрок ответил меньше, чем на ${AMOUNT_OF_QUESTIONS} вопросов`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 13333},
       {isAnswerCorrect: false, time: 17666}
@@ -53,8 +53,8 @@ describe(`Функция подсчета очков`, () => {
     assert.equal(countPoints(answers, attemptsLeft), -1);
   });
 
-  it(`должна вернуть от ${minPoints} до ${maxPoints} очков, 
-      если игрок ответил на ${amountOfQuestions} вопросов и не истратил все попытки`, () => {
+  it(`должна вернуть от ${MIN_SCORE} до ${MAX_SCORE} очков, 
+      если игрок ответил на ${AMOUNT_OF_QUESTIONS} вопросов и не истратил все попытки`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 14333},
       {isAnswerCorrect: false, time: 17896},
@@ -68,7 +68,7 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 12345}
     ];
     let attemptsLeft = 2;
-    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), minPoints, maxPoints));
+    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
 
     answers = [
       {isAnswerCorrect: true, time: 1000},
@@ -83,7 +83,7 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 5000}
     ];
     attemptsLeft = 1;
-    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), minPoints, maxPoints));
+    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
 
     answers = [
       {isAnswerCorrect: true, time: 14333},
@@ -98,7 +98,7 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 12345}
     ];
     attemptsLeft = 4;
-    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), minPoints, maxPoints));
+    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
 
     answers = [
       {isAnswerCorrect: false, time: 14333},
@@ -113,11 +113,11 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 12345}
     ];
     attemptsLeft = 3;
-    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), minPoints, maxPoints));
+    assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
   });
 
-  it(`должна вернуть ${amountOfQuestions * minEarnedPoints}, если игрок ответил на все вопросы и 
-      каждый ответ занял ${quickTime} секунд и больше`, () => {
+  it(`должна вернуть ${AMOUNT_OF_QUESTIONS * MIN_EARNED_POINTS}, если игрок ответил на все вопросы и 
+      каждый ответ занял ${QUICK_TIME} секунд и больше`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 51000},
       {isAnswerCorrect: true, time: 30500},
@@ -131,11 +131,11 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 50000}
     ];
     let attemptsLeft = 4;
-    assert.equal(countPoints(answers, attemptsLeft), amountOfQuestions * minEarnedPoints);
+    assert.equal(countPoints(answers, attemptsLeft), AMOUNT_OF_QUESTIONS * MIN_EARNED_POINTS);
   });
 
-  it(`должна вернуть ${maxPoints}, если игрок ответил на все вопросы 
-      и каждый ответ занял ${quickTime} секунд и больше`, () => {
+  it(`должна вернуть ${MAX_SCORE}, если игрок ответил на все вопросы 
+      и каждый ответ занял ${QUICK_TIME} секунд и больше`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 21000},
       {isAnswerCorrect: true, time: 20500},
@@ -149,6 +149,6 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 10000}
     ];
     let attemptsLeft = 4;
-    assert.equal(countPoints(answers, attemptsLeft), maxPoints);
+    assert.equal(countPoints(answers, attemptsLeft), MAX_SCORE);
   });
 });

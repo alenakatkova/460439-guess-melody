@@ -1,11 +1,11 @@
-const quickTime = 30000;
-const amountOfQuestions = 10;
-const maxMistakes = 4;
-const lostPoints = 2;
-const minEarnedPoints = 1;
-const maxEarnedPoints = 2;
-const minPoints = (amountOfQuestions - (maxMistakes - 1) * lostPoints) * minEarnedPoints;
-const maxPoints = amountOfQuestions * maxEarnedPoints;
+const QUICK_TIME = 30000;
+const AMOUNT_OF_QUESTIONS = 10;
+const MAX_ATTEMPTS = 4;
+const LOST_POINTS = 2;
+const MIN_EARNED_POINTS = 1;
+const MAX_EARNED_POINTS = 2;
+const MIN_SCORE = (AMOUNT_OF_QUESTIONS - (MAX_ATTEMPTS - 1) * LOST_POINTS) * MIN_EARNED_POINTS;
+const MAX_SCORE = AMOUNT_OF_QUESTIONS * MAX_EARNED_POINTS;
 
 /**
  * Функция считает набранные игроком баллы
@@ -17,18 +17,18 @@ const maxPoints = amountOfQuestions * maxEarnedPoints;
  */
 
 const countPoints = (answers, attemptsLeft) => {
-  if (answers.length < amountOfQuestions || attemptsLeft === 0) {
+  if (answers.length < AMOUNT_OF_QUESTIONS || attemptsLeft === 0) {
     return -1;
   }
   return answers.reduce((points, answer) => {
-    if (answer.isAnswerCorrect && answer.time < quickTime) {
-      return points + maxEarnedPoints;
+    if (answer.isAnswerCorrect && answer.time < QUICK_TIME) {
+      return points + MAX_EARNED_POINTS;
     } else if (answer.isAnswerCorrect) {
-      return points + minEarnedPoints;
+      return points + MIN_EARNED_POINTS;
     } else {
-      return points - lostPoints;
+      return points - LOST_POINTS;
     }
   }, 0);
 };
 
-export {countPoints, minPoints, maxPoints, amountOfQuestions, minEarnedPoints, quickTime};
+export {countPoints, MIN_SCORE, MAX_SCORE, AMOUNT_OF_QUESTIONS, MIN_EARNED_POINTS, QUICK_TIME};

@@ -8,8 +8,4 @@ const isNumInBetweenMinMax = (num, min, max) => {
   return num >= min && num <= max;
 };
 
-const compareNumbers = (a, b) => {
-  return b - a;
-};
-
-export {compareNumbers, getRandomInteger, isNumInBetweenMinMax};
+export {getRandomInteger, isNumInBetweenMinMax};

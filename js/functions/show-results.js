@@ -1,8 +1,6 @@
-import {compareNumbers} from '../util';
-
-const messages = {
-  win: (i, t, n) => {
-    return `Вы заняли ${i}-ое место из ${t} игроков. Это лучше чем у ${n}% игроков`;
+const MESSAGES = {
+  win: (place, amountOfPlayers, worseResults) => {
+    return `Вы заняли ${place}-ое место из ${amountOfPlayers} игроков. Это лучше чем у ${worseResults}% игроков`;
   },
   attemptsOut: `У вас закончились все попытки. Ничего, повезёт в следующий раз!`,
   timeOut: `Время вышло! Вы не успели отгадать все мелодии`
@@ -20,22 +18,23 @@ const messages = {
 
 const showResults = (allScores, playersResults) => {
   if (playersResults.time === 0) {
-    return messages.timeOut;
+    return MESSAGES.timeOut;
   } else if (playersResults.attemptsLeft === 0) {
-    return messages.attemptsOut;
+    return MESSAGES.attemptsOut;
   }
 
   const currentScore = playersResults.score;
   allScores.push(currentScore);
   let scores = allScores.slice();
-  scores.sort(compareNumbers);
+  scores.sort((a, b) => {
+    return b - a;
+  });
+  const place = scores.indexOf(currentScore) + 1;
+  const amountOfPlayers = scores.length;
+  let worseResults = ((amountOfPlayers - place) / amountOfPlayers) * 100;
+  worseResults = worseResults.toFixed();
 
-  const i = scores.indexOf(currentScore) + 1;
-  const t = scores.length;
-  let n = ((t - i) / t) * 100;
-  n = n.toFixed();
-
-  return messages.win(i, t, n);
+  return MESSAGES.win(place, amountOfPlayers, worseResults);
 };
 
-export {messages, showResults};
+export {MESSAGES, showResults};
