@@ -1,40 +1,21 @@
 /**
- * В модуль импортируется функция, создающая DOM-элемент и принимающая на вход разметку в виде строки
- * @exports DOM-элемент, созданный с помощью функции getElement, принимающей на вход строку (разметку)
+ * Модуль создает DOM-элемент экрана с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
+ * По умолчанию кнопка `Ответить` отключена и включается, когда выбран хотя бы один вариант ответа
+ * @exports DOM-элемент экрана с вопросом типа `genre`
  */
 
 import getElement from '../functions/get-element';
-import renderScreen from '../functions/render-screen';
-import timeoutScreen from './timeout';
-import winScreen from './win';
-import attemptsScreen from './attempts-out';
-import {getRandomInteger} from '../util';
+import getHeader from '../markup-parts/get-header';
+import content from '../data/question';
+import artistScreen from './artist';
+import showNextQuestion from '../functions/switch-screens';
 
-const results = [winScreen, timeoutScreen, attemptsScreen];
+/**
+ * Части разметки экрана
+ */
 
-const markup = `<section class="main main--level main--level-genre" id="genre">
-    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-      <circle
-        cx="390" cy="390" r="370"
-        class="timer-line"
-        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
-
-      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-        <span class="timer-value-mins">05</span><!--
-        --><span class="timer-value-dots">:</span><!--
-        --><span class="timer-value-secs">00</span>
-      </div>
-    </svg>
-    <div class="main-mistakes">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-    </div>
-
-    <div class="main-wrap">
-      <h2 class="title">Выберите инди-рок треки</h2>
-      <form class="genre">
-        <div class="genre-answer">
+const answers = [...content.genre.options].map((option, index) => {
+  return `<div class="genre-answer">
           <div class="player-wrapper">
             <div class="player">
               <audio></audio>
@@ -44,82 +25,56 @@ const markup = `<section class="main main--level main--level-genre" id="genre">
               </div>
             </div>
           </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-1">
-          <label class="genre-answer-check" for="a-1"></label>
-        </div>
+          <input type="checkbox" name="answer" value="answer-${index}" id="a-${index}" data-genre="${option.genre}">
+          <label class="genre-answer-check" for="a-${index}"></label>
+        </div>`;
+}).join(``);
 
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-2">
-          <label class="genre-answer-check" for="a-2"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-3">
-          <label class="genre-answer-check" for="a-3"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-4">
-          <label class="genre-answer-check" for="a-4"></label>
-        </div>
-
+const task = `<div class="main-wrap">
+      <h2 class="title">Выберите инди-рок треки</h2>
+      <form class="genre">
+        ${answers}
         <button class="genre-answer-send" type="submit">Ответить</button>
       </form>
-    </div>
+    </div>`;
+
+/**
+ * Разметка экрана и создание из нее DOM-элемента
+ */
+
+const markup = `<section class="main main--level main--level-genre" id="genre">
+    ${getHeader()}
+    ${task}
   </section>`;
 
 const genreScreen = getElement(markup);
+
+
 const answerBtn = genreScreen.querySelector(`.genre-answer-send`);
 answerBtn.disabled = true;
-const answers = [...genreScreen.querySelectorAll(`input[type=checkbox]`)];
+const checkboxes = [...genreScreen.querySelectorAll(`input[type=checkbox]`)];
 
 /**
  * Функция отключает кнопку "Ответить" в случае, если ни один из ответов не выбран
  */
 
 const onAnswerClick = () => {
-  answerBtn.disabled = !answers.some((answer) => {
-    return answer.checked;
+  answerBtn.disabled = !checkboxes.some((checkbox) => {
+    return checkbox.checked;
   });
 };
 
-answers.forEach((answer) => {
-  answer.addEventListener(`click`, onAnswerClick);
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener(`click`, onAnswerClick);
 });
 
 /**
  * Функция снимает галочки с чекбоксов
  */
 
-const resetForm = () => answers.forEach((answer) => {
-  answer.checked = false;
+const resetForm = () => checkboxes.forEach((checkbox) => {
+  checkbox.checked = false;
+  answerBtn.disabled = true;
 });
 
 /**
@@ -132,7 +87,7 @@ const resetForm = () => answers.forEach((answer) => {
 const onAnswerBtnClick = (evt) => {
   evt.preventDefault();
   resetForm();
-  renderScreen(results[getRandomInteger(0, results.length - 1)]);
+  showNextQuestion(artistScreen);
 };
 
 answerBtn.addEventListener(`click`, onAnswerBtnClick);
