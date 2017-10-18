@@ -17,7 +17,7 @@ const initialState = {
   mistakes: 0,
   time: gameData.time,
   // questionType: gameData.questionsTypes[0],
-  questionsAnswered: 0,
+  questionNumber: 0,
   answers: [],
   score: 0
 };

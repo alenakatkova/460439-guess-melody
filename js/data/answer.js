@@ -6,4 +6,8 @@ const answer = {
   //audio: ``
 };
 
+const getAnswer = () => {
+  this.isAnswerCorrect =
+}
+
 export default answer;

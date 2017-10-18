@@ -6,19 +6,19 @@
 
 import getElement from '../functions/get-element';
 import getHeader from '../markup-parts/get-header';
-import content from '../data/question';
+import {question} from '../data/question';
 import artistScreen from './artist';
-import showNextQuestion from '../functions/switch-screens';
+import showNextQuestion from '../functions/show-next-question';
 
 /**
  * Части разметки экрана
  */
 
-const answers = [...content.genre.options].map((option, index) => {
+const answers = [...question.genre.options].map((option, index) => {
   return `<div class="genre-answer">
           <div class="player-wrapper">
             <div class="player">
-              <audio></audio>
+              <audio src="${option.src}"></audio>
               <button class="player-control player-control--pause"></button>
               <div class="player-track">
                 <span class="player-status"></span>
@@ -31,7 +31,7 @@ const answers = [...content.genre.options].map((option, index) => {
 }).join(``);
 
 const task = `<div class="main-wrap">
-      <h2 class="title">Выберите инди-рок треки</h2>
+      <h2 class="title">${question.genre.task}</h2>
       <form class="genre">
         ${answers}
         <button class="genre-answer-send" type="submit">Ответить</button>

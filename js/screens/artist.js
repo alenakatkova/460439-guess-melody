@@ -6,14 +6,18 @@
 import getElement from '../functions/get-element';
 import genreScreen from './genre';
 import getHeader from '../markup-parts/get-header';
-import content from '../data/question';
-import showNextQuestion from '../functions/switch-screens';
+import {question} from '../data/question';
+import showNextQuestion from '../functions/show-next-question';
+
+const showArtistQuestion = (question) => {
+
+};
 
 /**
  * Части разметки экрана
  */
 
-const answers = [...content.artist.options].map((option, index) => {
+const answers = [...question.artist.options].map((option, index) => {
   return `<div class="main-answer-wrapper">
           <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}"/>
           <label class="main-answer" for="answer-${index}">
@@ -25,10 +29,10 @@ const answers = [...content.artist.options].map((option, index) => {
 }).join(``);
 
 const task = `<div class="main-wrap">
-      <h2 class="title main-title">${content.artist.task}</h2>
+      <h2 class="title main-title">${question.artist.task}</h2>
       <div class="player-wrapper">
         <div class="player">
-          <audio></audio>
+          <audio src="${question.artist.audioLink}"></audio>
           <button class="player-control player-control--pause"></button>
           <div class="player-track">
             <span class="player-status"></span>
@@ -51,11 +55,11 @@ const markup = `<section class="main main--level main--level-artist" id="artist"
 
 const artistScreen = getElement(markup);
 
-const radioButtons = artistScreen.querySelector(`.main-list`);
-
 /**
  * Функция определяет действие для события 'click' на элементах с классом .main-answer-preview
  */
+
+const radioButtons = artistScreen.querySelector(`.main-list`);
 
 const onRadioBtnClick = (evt) => {
   evt.preventDefault();
