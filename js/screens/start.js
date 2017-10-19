@@ -6,6 +6,7 @@
 import getElement from '../functions/get-element';
 import artistScreen from './artist';
 import renderScreen from '../functions/render-screen';
+import showNextQuestion from '../functions/show-next-question';
 
 /**
  * Разметка стартового экрана
@@ -32,7 +33,8 @@ const playBtn = startScreen.querySelector(`.main-play`);
 
 const onPlayBtnClick = (evt) => {
   evt.preventDefault();
-  renderScreen(artistScreen);
+  //renderScreen(artistScreen);
+  showNextQuestion();
 };
 
 playBtn.addEventListener(`click`, onPlayBtnClick);

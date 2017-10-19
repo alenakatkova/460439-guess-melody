@@ -2,17 +2,21 @@
 import winScreen from '../screens/win';
 //import attemptsScreen from '../screens/attempts-out';
 import renderScreen from './render-screen';
-import {gameData, initialState} from '../data/game-data';
+import {initialState} from '../data/game-data';
 import {questions} from '../data/question';
+import showArtistScreen from '../screens/artist';
+import showGenreScreen from '../screens/genre';
 
 
 let state = Object.assign({}, initialState);
 
-const showNextQuestion = (gameScreen) => {
+const showNextQuestion = () => {
   if (state.questionNumber === 10) {
     renderScreen(winScreen);
-  } else {
-    renderScreen(gameScreen);
+  } else if (questions[state.questionNumber].type === `artist`) {
+    renderScreen(showArtistScreen(questions[state.questionNumber]));
+  } else if (questions[state.questionNumber].type === `genre`) {
+    renderScreen(showGenreScreen(questions[state.questionNumber]));
   }
 
   state.questionNumber += 1;
@@ -24,6 +28,7 @@ const showNextQuestion = (gameScreen) => {
   // } else if (currentState.time === 0) {
   //   renderScreen(timeoutScreen);
   // } else
+
 };
 
 export default showNextQuestion;

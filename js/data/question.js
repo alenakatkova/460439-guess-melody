@@ -44,6 +44,8 @@ const getQuestions = () => {
 
 const questions = getQuestions();
 
+console.log(questions);
+
 const question = {
   artist: getQuestionData(`artist`),
   genre: getQuestionData(`genre`)
