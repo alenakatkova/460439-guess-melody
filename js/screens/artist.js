@@ -85,8 +85,8 @@ const showArtistScreen = (question) => {
         return evt.target.alt === question.correctAnswer;
       };
 
-      const answer = new Answer(isAnswerCorrect(), 30, evt.target.dataset.link);
-      console.log(answer);
+      question.playersAnswer = new Answer(isAnswerCorrect(), 30, evt.target.dataset.link);
+
       showNextQuestion();
     }
   };

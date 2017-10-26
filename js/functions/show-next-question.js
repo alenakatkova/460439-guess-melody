@@ -1,36 +1,54 @@
-//import timeoutScreen from '../screens/timeout';
 import winScreen from '../screens/win';
-//import attemptsScreen from '../screens/attempts-out';
 import renderScreen from './render-screen';
 import {initialState} from '../data/game-data';
-import questions from '../data/question';
 import showArtistScreen from '../screens/artist';
 import showGenreScreen from '../screens/genre';
+import attemptsScreen from '../screens/attempts-out';
+import {countPoints} from './count-points';
 
+let state;
 
-let state = Object.assign({}, initialState);
+/**
+ *
+ */
+
+const resetGameData = () => {
+  state = Object.assign({}, initialState);
+};
+
+resetGameData();
+
+/**
+ *
+ */
 
 const showNextQuestion = () => {
-  if (state.questionNumber === 10) {
-    renderScreen(winScreen);
-  } else if (questions[state.questionNumber].type === `artist`) {
-    renderScreen(showArtistScreen(questions[state.questionNumber]));
-    //console.log(questions[state.questionNumber].correctAnswer);
-  } else if (questions[state.questionNumber].type === `genre`) {
-    renderScreen(showGenreScreen(questions[state.questionNumber]));
-    //console.log(questions[state.questionNumber].correctAnswer);
+  console.log(state.tasks);
+  const playersAnswers = state.tasks.map((qu) => {
+    return qu.playersAnswer;
+  });
+
+  if (state.currentQuestionIndex > 0 && playersAnswers[state.currentQuestionIndex - 1].isAnswerCorrect === false) {
+    state.mistakes += 1;
   }
 
-  state.questionNumber += 1;
-  //console.log(state);
 
-  // здесь нужно в массив ответов запушить новый ответ
-  // if (currentState.mistakes === 0) {
-  //   renderScreen(attemptsScreen);
-  // } else if (currentState.time === 0) {
-  //   renderScreen(timeoutScreen);
-  // } else
+  if (state.mistakes === 4) {
+    renderScreen(attemptsScreen);
 
+    state = Object.assign({}, initialState);
+
+  } else if (state.currentQuestionIndex === 10) {
+    state.score = countPoints(playersAnswers, 4 - state.mistakes);
+    renderScreen(winScreen);
+    resetGameData();
+  } else if (state.tasks[state.currentQuestionIndex].type === `artist`) {
+    renderScreen(showArtistScreen(state.tasks[state.currentQuestionIndex]));
+    state.currentQuestionIndex += 1;
+  } else if (state.tasks[state.currentQuestionIndex].type === `genre`) {
+    renderScreen(showGenreScreen(state.tasks[state.currentQuestionIndex]));
+    state.currentQuestionIndex += 1;
+  }
 };
 
 export default showNextQuestion;

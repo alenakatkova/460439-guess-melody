@@ -27,16 +27,18 @@ const getRandomOptions = (amount) => {
 
 const Question = function (type) {
   this.type = type;
+  this.playersAnswer = null;
   if (this.type === `artist`) {
-    this.task = `Кто исполняет эту песню?`;
+
 
     // выбираем 3 рандомных песни из списка композиций, их исполнители будут вариантами ответов на вопрос
     this.options = getRandomOptions(3);
 
     // одну из песен делаем вопросом (ссылка на нее будет добавлена в тег audio, ее исполнителя надо выбрать из вариантов)
     this.target = [...this.options][getRandomInteger(0, 2)];
-    this.audioLink = this.target.src;
+    this.task = this.target.artist; // `Кто исполняет эту песню?`;
     this.correctAnswer = this.target.artist;
+    this.audioLink = this.target.src;
   } else {
     // выбираем 4 рандомных композиции - они будут вариантами ответа
     this.options = getRandomOptions(4);

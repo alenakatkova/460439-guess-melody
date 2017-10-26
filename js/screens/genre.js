@@ -11,15 +11,14 @@ import Answer from '../data/answer';
 /**
  * Функция создает экран игры с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
  * о умолчанию кнопка `Ответить` отключена и включается, когда выбран хотя бы один вариант ответа
- * @param {Object} question - объект вопроса вида {
- * audioLink: {String}, - ссылка на песню
- * amountOfCorrectAnswers: {Number}, - количество композиций с целевым жанром
- * options: Set(3), - 3 объекта с информацией о песнях
- * target: {Object}, - рандомная песня из options, исполнителя которой надо определить
- * task: {String}, - текст задания
- * type: {String} - тип вопроса `artist`
- * }
- * @returns {Node} genreScreen - DOM-элемент экрана
+ * @param {Object} question - объект вопроса вида: {
+ * @param {Object} question.audioLink: {String}, - ссылка на песню
+ * @param {Object} question.amountOfCorrectAnswers: {Number}, - количество композиций с целевым жанром
+ * @param {Object} question.options: Set(3), - 3 объекта с информацией о песнях
+ * @param {Object} question.target: {Object}, - рандомная песня из options, исполнителя которой надо определить
+ * @param {Object} question.task: {String}, - текст задания
+ * @param {Object} question.type: {String} - тип вопроса `artist`
+ * @return {Node} genreScreen - DOM-элемент экрана
  */
 
 const showGenreScreen = (question) => {
@@ -92,8 +91,9 @@ const showGenreScreen = (question) => {
 
   /**
    * Функция определяет действия для события 'click' на элементе playBtn:
+   * - запись ответа игрока
    * - сбрасываение полей формы
-   * - открытие экрана результатов
+   * - переход к следующему вопросу
    * @param {Object} evt
    */
 
@@ -101,8 +101,7 @@ const showGenreScreen = (question) => {
     evt.preventDefault();
 
     /**
-     * Функция определяет, является ли выбранный игроком ответ правильным
-     * @returns {boolean}
+     * Получение массива ответов игрока и массива ссылок на выбранные им композиции
      */
 
     const checkedCheckboxes = checkboxes.filter((checkbox) => {
@@ -117,14 +116,18 @@ const showGenreScreen = (question) => {
       return checkbox.dataset.src;
     });
 
+    /**
+     * Функция определяет, является ли выбранный игроком ответ правильным
+     * @returns {boolean}
+     */
+
     const isAnswerCorrect = () => {
       return playersAnswers.length === question.amountOfCorrectAnswers && playersAnswers.every((it) => {
         return it === question.target;
       });
     };
 
-    const answer = new Answer(isAnswerCorrect(), 30, audioLinks);
-    console.log(answer);
+    question.playersAnswer = new Answer(isAnswerCorrect(), 30, audioLinks);
 
     resetForm();
     showNextQuestion();

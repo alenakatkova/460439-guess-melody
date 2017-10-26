@@ -2,6 +2,8 @@
  * Структура данных, описывающих игру
  */
 
+import questions from '../data/question';
+
 const gameData = {
   questionsTypes: [`artist`, `genre`],
   amountOfQuestions: 10,
@@ -16,10 +18,10 @@ const gameData = {
 const initialState = {
   mistakes: 0,
   time: gameData.time,
-  // questionType: gameData.questionsTypes[0],
-  questionNumber: 0,
+  currentQuestionIndex: 0,
   answers: [],
-  score: 0
+  score: 0,
+  tasks: questions
 };
 
 export {gameData, initialState};

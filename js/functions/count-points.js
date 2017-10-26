@@ -1,16 +1,16 @@
-const QUICK_TIME = 30000;
+const QUICK_TIME = 30;
 const AMOUNT_OF_QUESTIONS = 10;
 const MAX_ATTEMPTS = 4;
 const LOST_POINTS = 2;
 const MIN_EARNED_POINTS = 1;
 const MAX_EARNED_POINTS = 2;
-const MIN_SCORE = (AMOUNT_OF_QUESTIONS - (MAX_ATTEMPTS - 1) * LOST_POINTS) * MIN_EARNED_POINTS;
+const MIN_SCORE = (AMOUNT_OF_QUESTIONS - (MAX_ATTEMPTS - 1)) * MIN_EARNED_POINTS - (MAX_ATTEMPTS - 1) * LOST_POINTS;
 const MAX_SCORE = AMOUNT_OF_QUESTIONS * MAX_EARNED_POINTS;
 
 /**
  * Функция считает набранные игроком баллы
  * @param {Array} answers - массив ответов пользователя
- * Каждый ответ - это объект вида {isAnswerCorrect: {Boolean}, time: {Number}},
+ * Каждый ответ - это объект вида {isAnswerCorrect: {Boolean}, time: {Number}, audio: {String|Array}},
  * в котором isAnswerCorrect указывает на правильность ответа, а time - на время в мс, за которое игрок дал ответ
  * @param {Number} attemptsLeft - количество оставшихся нот
  * @returns {Number} - количество набранных очков
