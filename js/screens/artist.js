@@ -6,6 +6,7 @@
 import getElement from '../functions/get-element';
 import getHeader from '../markup-parts/get-header';
 import showNextQuestion from '../functions/show-next-question';
+import Answer from '../data/answer';
 
 /**
  * Функция создает экран игры с вопросом типа `artist` и добавляет обработчик события `click`
@@ -32,7 +33,7 @@ const showArtistScreen = (question) => {
           <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}"/>
           <label class="main-answer" for="answer-${index}">
             <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="${option.artist}" width="134" height="134">
+                 alt="${option.artist}" data-link="${option.src}" width="134" height="134">
             ${option.artist}
           </label>
         </div>`;
@@ -74,6 +75,18 @@ const showArtistScreen = (question) => {
   const onRadioBtnClick = (evt) => {
     evt.preventDefault();
     if (evt.target.className === `main-answer-preview`) {
+
+      /**
+       * Функция определяет, является ли выбранный игроком ответ правильным
+       * @returns {boolean}
+       */
+
+      const isAnswerCorrect = () => {
+        return evt.target.alt === question.correctAnswer;
+      };
+
+      const answer = new Answer(isAnswerCorrect(), 30, evt.target.dataset.link);
+      console.log(answer);
       showNextQuestion();
     }
   };

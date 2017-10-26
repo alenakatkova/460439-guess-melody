@@ -1,13 +1,15 @@
-// Заведите под него подходящую структуру данных, выделите свойства, описывающие ответ (правильный ли это ответ, содержимое ответа: ссылка на изображение или аудиофайл)
+/**
+ * Функция создает объект ответа
+ * @param {Boolean} correctness - правильность ответа
+ * @param {Number} time - время, за которое дан ответ
+ * @param {String} link - ссылка на аудиофайл ответа
+ * @constructor
+ */
 
-const answer = {
-  //isAnswerCorrect: ,
-  time: 30
-  //audio: ``
+const Answer = function (correctness, time, link) {
+  this.isAnswerCorrect = correctness;
+  this.time = time;
+  this.audio = link;
 };
 
-const getAnswer = () => {
-  this.isAnswerCorrect =
-}
-
-export default answer;
+export default Answer;

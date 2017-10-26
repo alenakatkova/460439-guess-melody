@@ -6,13 +6,14 @@
 import getElement from '../functions/get-element';
 import getHeader from '../markup-parts/get-header';
 import showNextQuestion from '../functions/show-next-question';
+import Answer from '../data/answer';
 
 /**
  * Функция создает экран игры с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
  * о умолчанию кнопка `Ответить` отключена и включается, когда выбран хотя бы один вариант ответа
  * @param {Object} question - объект вопроса вида {
  * audioLink: {String}, - ссылка на песню
- * correctAnswer: {String}, - правильный ответ - имя исполнителя
+ * amountOfCorrectAnswers: {Number}, - количество композиций с целевым жанром
  * options: Set(3), - 3 объекта с информацией о песнях
  * target: {Object}, - рандомная песня из options, исполнителя которой надо определить
  * task: {String}, - текст задания
@@ -38,7 +39,7 @@ const showGenreScreen = (question) => {
               </div>
             </div>
           </div>
-          <input type="checkbox" name="answer" value="answer-${index}" id="a-${index}" data-genre="${option.genre}">
+          <input type="checkbox" name="answer" value="answer-${index}" id="a-${index}" data-genre="${option.genre}" data-src="${option.src}">
           <label class="genre-answer-check" for="a-${index}"></label>
         </div>`;
   }).join(``);
@@ -98,6 +99,33 @@ const showGenreScreen = (question) => {
 
   const onAnswerBtnClick = (evt) => {
     evt.preventDefault();
+
+    /**
+     * Функция определяет, является ли выбранный игроком ответ правильным
+     * @returns {boolean}
+     */
+
+    const checkedCheckboxes = checkboxes.filter((checkbox) => {
+      return checkbox.checked === true;
+    });
+
+    const playersAnswers = checkedCheckboxes.map((checkbox) => {
+      return checkbox.dataset.genre;
+    });
+
+    const audioLinks = checkedCheckboxes.map((checkbox) => {
+      return checkbox.dataset.src;
+    });
+
+    const isAnswerCorrect = () => {
+      return playersAnswers.length === question.amountOfCorrectAnswers && playersAnswers.every((it) => {
+        return it === question.target;
+      });
+    };
+
+    const answer = new Answer(isAnswerCorrect(), 30, audioLinks);
+    console.log(answer);
+
     resetForm();
     showNextQuestion();
   };

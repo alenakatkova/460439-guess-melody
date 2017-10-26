@@ -11,7 +11,7 @@ import showNextQuestion from '../functions/show-next-question';
 /**
  * Разметка стартового экрана
  */
-
+let answ = [];
 const markup = `<section class="main main--welcome" id="start">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
     <button class="main-play">Начать игру</button>
