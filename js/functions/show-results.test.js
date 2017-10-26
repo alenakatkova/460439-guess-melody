@@ -1,5 +1,5 @@
 import assert from 'assert';
-import {MESSAGES, showResults} from './show-results';
+import {resultScreenContent, showResults} from './show-results';
 
 describe(`Функция вывода результата`, () => {
   it(`должна правильно вычислить результаты игрока в случае выигрыша`, () => {
@@ -9,7 +9,7 @@ describe(`Функция вывода результата`, () => {
       attemptsLeft: 2,
       time: 30000
     };
-    assert.equal(showResults(allScores, playersResult), MESSAGES.win(2, 5, 60));
+    assert.equal(showResults(allScores, playersResult), resultScreenContent.win(2, 5, 60));
 
     allScores = [5, 12, 12, 6, 8, 9, 4, 13, 15, 4, 7, 5, 12, 20];
     playersResult = {
@@ -17,7 +17,7 @@ describe(`Функция вывода результата`, () => {
       attemptsLeft: 4,
       time: 300
     };
-    assert.equal(showResults(allScores, playersResult), MESSAGES.win(1, 15, 93));
+    assert.equal(showResults(allScores, playersResult), resultScreenContent.win(1, 15, 93));
 
     allScores = [5, 6, 8, 5, 10];
     playersResult = {
@@ -25,26 +25,26 @@ describe(`Функция вывода результата`, () => {
       attemptsLeft: 1,
       time: 3300
     };
-    assert.equal(showResults(allScores, playersResult), MESSAGES.win(6, 6, 0));
+    assert.equal(showResults(allScores, playersResult), resultScreenContent.win(6, 6, 0));
   });
 
-  it(`должна вернуть '${MESSAGES.timeOut}', если время вышло`, () => {
+  it(`должна вернуть '${resultScreenContent.timeOut}', если время вышло`, () => {
     let allScores = [4, 7, 5, 12, 20];
     let playersResult = {
       score: 2,
       attemptsLeft: 2,
       time: 0
     };
-    assert.equal(showResults(allScores, playersResult), MESSAGES.timeOut);
+    assert.equal(showResults(allScores, playersResult), resultScreenContent.timeOut);
   });
 
-  it(`должна вернуть '${MESSAGES.attemptsOut}', если закончились попытки`, () => {
+  it(`должна вернуть '${resultScreenContent.attemptsOut}', если закончились попытки`, () => {
     let allScores = [4, 7, 5, 12, 20];
     let playersResult = {
       score: 2,
       attemptsLeft: 0,
       time: 50000
     };
-    assert.equal(showResults(allScores, playersResult), MESSAGES.attemptsOut);
+    assert.equal(showResults(allScores, playersResult), resultScreenContent.attemptsOut);
   });
 });

@@ -24,4 +24,10 @@ const initialState = {
   tasks: questions
 };
 
-export {gameData, initialState};
+/**
+ *
+ */
+
+let stats = [12, 2, 20, 8];
+
+export {gameData, initialState, stats};

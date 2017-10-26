@@ -1,10 +1,11 @@
-import winScreen from '../screens/win';
 import renderScreen from './render-screen';
-import {initialState} from '../data/game-data';
+import {initialState, stats} from '../data/game-data';
 import showArtistScreen from '../screens/artist';
 import showGenreScreen from '../screens/genre';
-import attemptsScreen from '../screens/attempts-out';
 import {countPoints} from './count-points';
+import showResultScreen from '../screens/result';
+import {GameResults, resultScreenContent} from '../data/results';
+import { showResults } from './show-results'
 
 let state;
 
@@ -22,8 +23,7 @@ resetGameData();
  *
  */
 
-const showNextQuestion = () => {
-  console.log(state.tasks);
+const showNextScreen = () => {
   const playersAnswers = state.tasks.map((qu) => {
     return qu.playersAnswer;
   });
@@ -32,15 +32,17 @@ const showNextQuestion = () => {
     state.mistakes += 1;
   }
 
-
   if (state.mistakes === 4) {
-    renderScreen(attemptsScreen);
-
     state = Object.assign({}, initialState);
-
+    state.score = countPoints(playersAnswers, 0);
+    const game = new GameResults(state.score, 4, 250);
+    stats.push(state.score);
+    renderScreen(showResultScreen(resultScreenContent.attemptsOut.title, showResults(stats, game), ``, resultScreenContent.attemptsOut.button));
   } else if (state.currentQuestionIndex === 10) {
     state.score = countPoints(playersAnswers, 4 - state.mistakes);
-    renderScreen(winScreen);
+    const game = new GameResults(state.score, 0, 250);
+    stats.push(state.score);
+    renderScreen(showResultScreen(resultScreenContent.win.title, resultScreenContent.win.message1(5, 0, 13, 1, 1), showResults(stats, game), resultScreenContent.win.button));
     resetGameData();
   } else if (state.tasks[state.currentQuestionIndex].type === `artist`) {
     renderScreen(showArtistScreen(state.tasks[state.currentQuestionIndex]));
@@ -51,4 +53,4 @@ const showNextQuestion = () => {
   }
 };
 
-export default showNextQuestion;
+export default showNextScreen;

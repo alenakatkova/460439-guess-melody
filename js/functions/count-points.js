@@ -21,7 +21,9 @@ const countPoints = (answers, attemptsLeft) => {
     return -1;
   }
   return answers.reduce((points, answer) => {
-    if (answer.isAnswerCorrect && answer.time < QUICK_TIME) {
+    if (answer === null) {
+      return points;
+    } else if (answer.isAnswerCorrect && answer.time < QUICK_TIME) {
       return points + MAX_EARNED_POINTS;
     } else if (answer.isAnswerCorrect) {
       return points + MIN_EARNED_POINTS;
