@@ -2,13 +2,19 @@
  * Структура данных, описывающих игру
  */
 
-import questions from '../data/question';
+import getQuestions from '../data/question';
 
-const gameData = {
-  questionsTypes: [`artist`, `genre`],
-  amountOfQuestions: 10,
-  maxMistakes: 4,
-  time: 300
+const GameData = {
+  QUESTIONS_TYPES: [`artist`, `genre`],
+  AMOUNT_OF_QUESTIONS: 10,
+  MAX_ATTEMPTS: 4,
+  MAX_TIME: 300,
+  QUICK_TIME: 30,
+  counting: {
+    LOST_POINTS: 2,
+    MIN_EARNED_POINTS: 1,
+    MAX_EARNED_POINTS: 2
+  }
 };
 
 /**
@@ -17,17 +23,17 @@ const gameData = {
 
 const initialState = {
   mistakes: 0,
-  time: gameData.time,
+  time: GameData.MAX_TIME,
   currentQuestionIndex: 0,
   answers: [],
   score: 0,
-  tasks: questions
+  tasks: getQuestions()
 };
 
 /**
- *
+ * Статистика прошлых игр
  */
 
 let stats = [12, 2, 20, 8];
 
-export {gameData, initialState, stats};
+export {GameData, initialState, stats};

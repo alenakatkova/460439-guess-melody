@@ -1,5 +1,6 @@
 import getElement from '../functions/get-element';
 import initializeReplay from '../functions/replay';
+import renderScreen from '../functions/render-screen';
 
 
 const showResultScreen = (heading, mainContent, extraContent, link) => {
@@ -29,7 +30,7 @@ const showResultScreen = (heading, mainContent, extraContent, link) => {
 
   initializeReplay(resultScreen);
 
-  return resultScreen;
+  return renderScreen(resultScreen);
 };
 
 export default showResultScreen;

@@ -7,6 +7,7 @@ import getElement from '../functions/get-element';
 import getHeader from '../markup-parts/get-header';
 import showNextQuestion from '../functions/show-next-question';
 import Answer from '../data/answer';
+import renderScreen from '../functions/render-screen';
 
 /**
  * Функция создает экран игры с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
@@ -135,7 +136,7 @@ const showGenreScreen = (question) => {
 
   answerBtn.addEventListener(`click`, onAnswerBtnClick);
 
-  return genreScreen;
+  return renderScreen(genreScreen);
 };
 
 export default showGenreScreen;

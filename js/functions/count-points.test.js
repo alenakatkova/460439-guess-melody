@@ -1,9 +1,14 @@
 import assert from 'assert';
-import {countPoints, MIN_SCORE, MAX_SCORE, AMOUNT_OF_QUESTIONS, MIN_EARNED_POINTS, QUICK_TIME} from './count-points';
+import countPoints from './count-points';
 import {isNumInBetweenMinMax} from '../util';
+import {GameData} from '../data/game-data';
+
+const MIN_SCORE = (GameData.AMOUNT_OF_QUESTIONS - (GameData.MAX_ATTEMPTS - 1))
+    * GameData.counting.MIN_EARNED_POINTS - (GameData.MAX_ATTEMPTS - 1) * GameData.counting.LOST_POINTS;
+const MAX_SCORE = GameData.AMOUNT_OF_QUESTIONS * GameData.counting.MAX_EARNED_POINTS;
 
 describe(`Функция подсчета очков`, () => {
-  it(`должна вернуть -1, если игрок ответил меньше, чем на ${AMOUNT_OF_QUESTIONS} вопросов`, () => {
+  it(`должна вернуть -1, если игрок ответил меньше, чем на ${GameData.AMOUNT_OF_QUESTIONS} вопросов`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 33},
       {isAnswerCorrect: false, time: 34}
@@ -54,7 +59,7 @@ describe(`Функция подсчета очков`, () => {
   });
 
   it(`должна вернуть от ${MIN_SCORE} до ${MAX_SCORE} очков, 
-      если игрок ответил на ${AMOUNT_OF_QUESTIONS} вопросов и не истратил все попытки`, () => {
+      если игрок ответил на ${GameData.AMOUNT_OF_QUESTIONS} вопросов и не истратил все попытки`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 12},
       {isAnswerCorrect: false, time: 3},
@@ -116,8 +121,8 @@ describe(`Функция подсчета очков`, () => {
     assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
   });
 
-  it(`должна вернуть ${AMOUNT_OF_QUESTIONS * MIN_EARNED_POINTS}, если игрок ответил на все вопросы и 
-      каждый ответ занял ${QUICK_TIME} секунд и больше`, () => {
+  it(`должна вернуть ${GameData.AMOUNT_OF_QUESTIONS * GameData.counting.MIN_EARNED_POINTS}, если игрок ответил на все вопросы и 
+      каждый ответ занял ${GameData.QUICK_TIME} секунд и больше`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 33},
       {isAnswerCorrect: true, time: 33},
@@ -131,11 +136,11 @@ describe(`Функция подсчета очков`, () => {
       {isAnswerCorrect: true, time: 33}
     ];
     let attemptsLeft = 4;
-    assert.equal(countPoints(answers, attemptsLeft), AMOUNT_OF_QUESTIONS * MIN_EARNED_POINTS);
+    assert.equal(countPoints(answers, attemptsLeft), GameData.AMOUNT_OF_QUESTIONS * GameData.counting.MIN_EARNED_POINTS);
   });
 
   it(`должна вернуть ${MAX_SCORE}, если игрок ответил на все вопросы 
-      и каждый ответ занял меньше ${QUICK_TIME} секунд`, () => {
+      и каждый ответ занял меньше ${GameData.QUICK_TIME} секунд`, () => {
     let answers = [
       {isAnswerCorrect: true, time: 12},
       {isAnswerCorrect: true, time: 12},

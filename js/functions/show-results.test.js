@@ -7,7 +7,7 @@ describe(`Функция вывода результата`, () => {
     let playersResult = {
       score: 12,
       attemptsLeft: 2,
-      time: 30000
+      TIME: 30000
     };
     assert.equal(showResults(allScores, playersResult), resultScreenContent.win(2, 5, 60));
 
@@ -15,7 +15,7 @@ describe(`Функция вывода результата`, () => {
     playersResult = {
       score: 20,
       attemptsLeft: 4,
-      time: 300
+      TIME: 300
     };
     assert.equal(showResults(allScores, playersResult), resultScreenContent.win(1, 15, 93));
 
@@ -23,7 +23,7 @@ describe(`Функция вывода результата`, () => {
     playersResult = {
       score: 4,
       attemptsLeft: 1,
-      time: 3300
+      TIME: 3300
     };
     assert.equal(showResults(allScores, playersResult), resultScreenContent.win(6, 6, 0));
   });
@@ -33,7 +33,7 @@ describe(`Функция вывода результата`, () => {
     let playersResult = {
       score: 2,
       attemptsLeft: 2,
-      time: 0
+      TIME: 0
     };
     assert.equal(showResults(allScores, playersResult), resultScreenContent.timeOut);
   });
@@ -43,7 +43,7 @@ describe(`Функция вывода результата`, () => {
     let playersResult = {
       score: 2,
       attemptsLeft: 0,
-      time: 50000
+      TIME: 50000
     };
     assert.equal(showResults(allScores, playersResult), resultScreenContent.attemptsOut);
   });

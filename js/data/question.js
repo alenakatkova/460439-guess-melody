@@ -1,5 +1,6 @@
 /**
  * Модуль создает структуру данных, описывающих два типа вопросов в игре
+ * @export - функция, создающая массив вопросов
  */
 
 import audio from './audio';
@@ -36,7 +37,7 @@ const Question = function (type) {
 
     // одну из песен делаем вопросом (ссылка на нее будет добавлена в тег audio, ее исполнителя надо выбрать из вариантов)
     this.target = [...this.options][getRandomInteger(0, 2)];
-    this.task = this.target.artist; // `Кто исполняет эту песню?`;
+    this.task = `Кто исполняет эту песню?`; // ответ потом уберу, с ним удобнее тестировать
     this.correctAnswer = this.target.artist;
     this.audioLink = this.target.src;
   } else {
@@ -68,6 +69,4 @@ const getQuestions = () => {
   return questions;
 };
 
-const questions = getQuestions();
-
-export default questions;
+export default getQuestions;

@@ -7,6 +7,7 @@ import getElement from '../functions/get-element';
 import getHeader from '../markup-parts/get-header';
 import showNextQuestion from '../functions/show-next-question';
 import Answer from '../data/answer';
+import renderScreen from '../functions/render-screen';
 
 /**
  * Функция создает экран игры с вопросом типа `artist` и добавляет обработчик события `click`
@@ -93,7 +94,7 @@ const showArtistScreen = (question) => {
 
   radioButtons.addEventListener(`click`, onRadioBtnClick);
 
-  return artistScreen;
+  return renderScreen(artistScreen);
 };
 
 export default showArtistScreen;

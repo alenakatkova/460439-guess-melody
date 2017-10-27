@@ -1,13 +1,5 @@
 import {resultScreenContent} from '../data/results';
 
-// const resultScreenContent = {
-//   win: (place, amountOfPlayers, worseResults) => {
-//     return `Вы заняли ${place}-ое место из ${amountOfPlayers} игроков. Это лучше чем у ${worseResults}% игроков`;
-//   },
-//   attemptsOut: `У вас закончились все попытки. Ничего, повезёт в следующий раз!`,
-//   timeOut: `Время вышло! Вы не успели отгадать все мелодии`
-// };
-
 /**
  * Функция определяет, какое сообщение будет показано игроку в конце игры
  * @param {Array} allScores - массив результатов всех игроков
@@ -23,20 +15,18 @@ const showResults = (allScores, playersResults) => {
     return resultScreenContent.timeOut.message;
   } else if (playersResults.attemptsLeft === 0) {
     return resultScreenContent.attemptsOut.message;
+  } else {
+    const currentScore = playersResults.score;
+    let scores = allScores.slice();
+    scores.sort((a, b) => {
+      return b - a;
+    });
+    const place = scores.indexOf(currentScore) + 1;
+    const amountOfPlayers = scores.length;
+    let worseResults = ((amountOfPlayers - place) / amountOfPlayers) * 100;
+    worseResults = worseResults.toFixed();
+    return resultScreenContent.win.message2(place, amountOfPlayers, worseResults);
   }
-
-  const currentScore = playersResults.score;
-  allScores.push(currentScore);
-  let scores = allScores.slice();
-  scores.sort((a, b) => {
-    return b - a;
-  });
-  const place = scores.indexOf(currentScore) + 1;
-  const amountOfPlayers = scores.length;
-  let worseResults = ((amountOfPlayers - place) / amountOfPlayers) * 100;
-  worseResults = worseResults.toFixed();
-
-  return resultScreenContent.win.message2(place, amountOfPlayers, worseResults);
 };
 
-export {resultScreenContent, showResults};
+export default showResults;
