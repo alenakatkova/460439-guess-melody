@@ -4,8 +4,6 @@
  */
 
 import getElement from '../functions/get-element';
-import artistScreen from './artist';
-import renderScreen from '../functions/render-screen';
 import showNextQuestion from '../functions/show-next-question';
 
 /**
@@ -33,7 +31,6 @@ const playBtn = startScreen.querySelector(`.main-play`);
 
 const onPlayBtnClick = (evt) => {
   evt.preventDefault();
-  //renderScreen(artistScreen);
   showNextQuestion();
 };
 

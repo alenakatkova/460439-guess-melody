@@ -6,14 +6,13 @@ import showResultScreen from '../screens/result';
 import {GameResults, resultScreenContent} from '../data/results';
 import showResults from './show-results';
 
-let currentState = Object.assign({}, initialState);;
+let currentState = Object.assign({}, initialState);
 
 const showNextScreen = () => {
   const tasks = currentState.tasks;
   currentState.answers = tasks.map((task) => {
     return task.playersAnswer;
   });
-  console.log(currentState.answers);
 
   if (currentState.currentQuestionIndex > 0
       && currentState.answers[currentState.currentQuestionIndex - 1].isAnswerCorrect === false) {
