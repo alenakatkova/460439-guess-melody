@@ -1,11 +1,14 @@
 /**
- * В модуль импортируется функция, создающая DOM-элемент и принимающая на вход разметку в виде строки
- * @exports DOM-элемент, созданный с помощью функции getElement, принимающей на вход строку (разметку)
+ * Модуль создает DOM-элемент стартового экрана игры и добавляет click-listener к кнопке запуска игры
+ * @exports DOM-элемент стартового экрана игры
  */
 
 import getElement from '../functions/get-element';
-import artistScreen from './artist';
-import renderScreen from '../functions/render-screen';
+import showNextQuestion from '../functions/show-next-question';
+
+/**
+ * Разметка стартового экрана
+ */
 
 const markup = `<section class="main main--welcome" id="start">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
@@ -28,7 +31,7 @@ const playBtn = startScreen.querySelector(`.main-play`);
 
 const onPlayBtnClick = (evt) => {
   evt.preventDefault();
-  renderScreen(artistScreen);
+  showNextQuestion();
 };
 
 playBtn.addEventListener(`click`, onPlayBtnClick);

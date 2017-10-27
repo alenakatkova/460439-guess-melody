@@ -1,35 +1,50 @@
 /**
- * В модуль импортируется функция, создающая DOM-элемент и принимающая на вход разметку в виде строки
- * @exports DOM-элемент, созданный с помощью функции getElement, принимающей на вход строку (разметку)
+ * Модуль создает DOM-элемент экрана с вопросом типа `artist`
+ * @exports - функция создания экрана
  */
 
 import getElement from '../functions/get-element';
-import genreScreen from './genre';
+import getHeader from '../markup-parts/get-header';
+import showNextQuestion from '../functions/show-next-question';
+import Answer from '../data/answer';
 import renderScreen from '../functions/render-screen';
 
-const markup = `<section class="main main--level main--level-artist" id="artist">
-    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-      <circle
-        cx="390" cy="390" r="370"
-        class="timer-line"
-        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+/**
+ * Функция создает экран игры с вопросом типа `artist` и добавляет обработчик события `click`
+ * к радио-кнопкам с вариантами ответов. После выбора ответа отрисовывается следующий экран (результат или вопрос)
+ * @param {Object} question - объект вопроса вида {
+ * audioLink: {String}, - ссылка на песню
+ * correctAnswer: {String}, - правильный ответ - имя исполнителя
+ * options: Set(3), - 3 объекта с информацией о песнях
+ * target: {Object}, - рандомная песня из options, исполнителя которой надо определить
+ * task: {String}, - текст задания
+ * type: {String} - тип вопроса `artist`
+ * }
+ * @returns {Node} artistScreen - DOM-элемент экрана
+ */
 
-      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-        <span class="timer-value-mins">05</span><!--
-        --><span class="timer-value-dots">:</span><!--
-        --><span class="timer-value-secs">00</span>
-      </div>
-    </svg>
-    <div class="main-mistakes">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-    </div>
+const showArtistScreen = (question) => {
 
-    <div class="main-wrap">
-      <h2 class="title main-title">Кто исполняет эту песню?</h2>
+  /**
+   * Части разметки экрана
+   */
+
+  const answers = [...question.options].map((option, index) => {
+    return `<div class="main-answer-wrapper">
+          <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}"/>
+          <label class="main-answer" for="answer-${index}">
+            <img class="main-answer-preview" src="http://placehold.it/134x134"
+                 alt="${option.artist}" data-link="${option.src}" width="134" height="134">
+            ${option.artist}
+          </label>
+        </div>`;
+  }).join(``);
+
+  const task = `<div class="main-wrap">
+      <h2 class="title main-title">${question.task}</h2>
       <div class="player-wrapper">
         <div class="player">
-          <audio></audio>
+          <audio src="${question.audioLink}"></audio>
           <button class="player-control player-control--pause"></button>
           <div class="player-track">
             <span class="player-status"></span>
@@ -37,50 +52,49 @@ const markup = `<section class="main main--level main--level-artist" id="artist"
         </div>
       </div>
       <form class="main-list">
-        <div class="main-answer-wrapper">
-          <input class="main-answer-r" type="radio" id="answer-1" name="answer" value="val-1"/>
-          <label class="main-answer" for="answer-1">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="Пелагея" width="134" height="134">
-            Пелагея
-          </label>
-        </div>
-
-        <div class="main-answer-wrapper">
-          <input class="main-answer-r" type="radio" id="answer-2" name="answer" value="val-2"/>
-          <label class="main-answer" for="answer-2">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="Краснознаменная дивизия имени моей бабушки" width="134" height="134">
-            Краснознаменная дивизия имени моей бабушки
-          </label>
-        </div>
-
-        <div class="main-answer-wrapper">
-          <input class="main-answer-r" type="radio" id="answer-3" name="answer" value="val-3"/>
-          <label class="main-answer" for="answer-3">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="Lorde" width="134" height="134">
-            Lorde
-          </label>
-        </div>
+        ${answers}
       </form>
-    </div>
+    </div>`;
+
+  /**
+   * Разметка экрана и создание из нее DOM-элемента
+   */
+
+  const markup = `<section class="main main--level main--level-artist" id="artist">
+    ${getHeader()}
+    ${task}
   </section>`;
 
-const artistScreen = getElement(markup);
-const answers = artistScreen.querySelector(`.main-list`);
+  const artistScreen = getElement(markup);
 
-/**
- * Функция определяет действие для события 'click' на элементах с классом .main-answer-preview
- */
+  /**
+   * Функция определяет действие для события 'click' на элементах с классом .main-answer-preview
+   */
 
-const onAnswerClick = (evt) => {
-  evt.preventDefault();
-  if (evt.target.className === `main-answer-preview`) {
-    renderScreen(genreScreen);
-  }
+  const radioButtons = artistScreen.querySelector(`.main-list`);
+
+  const onRadioBtnClick = (evt) => {
+    evt.preventDefault();
+    if (evt.target.className === `main-answer-preview`) {
+
+      /**
+       * Функция определяет, является ли выбранный игроком ответ правильным
+       * @returns {boolean}
+       */
+
+      const isAnswerCorrect = () => {
+        return evt.target.alt === question.correctAnswer;
+      };
+
+      question.playersAnswer = new Answer(isAnswerCorrect(), 30, evt.target.dataset.link);
+
+      showNextQuestion();
+    }
+  };
+
+  radioButtons.addEventListener(`click`, onRadioBtnClick);
+
+  return renderScreen(artistScreen);
 };
 
-answers.addEventListener(`click`, onAnswerClick);
-
-export default artistScreen;
+export default showArtistScreen;

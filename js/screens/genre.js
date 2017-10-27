@@ -1,140 +1,142 @@
 /**
- * В модуль импортируется функция, создающая DOM-элемент и принимающая на вход разметку в виде строки
- * @exports DOM-элемент, созданный с помощью функции getElement, принимающей на вход строку (разметку)
+ * Модуль создает DOM-элемент экрана с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
+ * @exports - функция создания экрана
  */
 
 import getElement from '../functions/get-element';
+import getHeader from '../markup-parts/get-header';
+import showNextQuestion from '../functions/show-next-question';
+import Answer from '../data/answer';
 import renderScreen from '../functions/render-screen';
-import timeoutScreen from './timeout';
-import winScreen from './win';
-import attemptsScreen from './attempts-out';
-import {getRandomInteger} from '../util';
 
-const results = [winScreen, timeoutScreen, attemptsScreen];
+/**
+ * Функция создает экран игры с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
+ * о умолчанию кнопка `Ответить` отключена и включается, когда выбран хотя бы один вариант ответа
+ * @param {Object} question - объект вопроса вида: {
+ * @param {Object} question.audioLink: {String}, - ссылка на песню
+ * @param {Object} question.amountOfCorrectAnswers: {Number}, - количество композиций с целевым жанром
+ * @param {Object} question.options: Set(3), - 3 объекта с информацией о песнях
+ * @param {Object} question.target: {Object}, - рандомная песня из options, исполнителя которой надо определить
+ * @param {Object} question.task: {String}, - текст задания
+ * @param {Object} question.type: {String} - тип вопроса `artist`
+ * @return {Node} genreScreen - DOM-элемент экрана
+ */
 
-const markup = `<section class="main main--level main--level-genre" id="genre">
-    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-      <circle
-        cx="390" cy="390" r="370"
-        class="timer-line"
-        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+const showGenreScreen = (question) => {
 
-      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-        <span class="timer-value-mins">05</span><!--
-        --><span class="timer-value-dots">:</span><!--
-        --><span class="timer-value-secs">00</span>
-      </div>
-    </svg>
-    <div class="main-mistakes">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-      <img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">
-    </div>
+  /**
+   * Части разметки экрана
+   */
 
-    <div class="main-wrap">
-      <h2 class="title">Выберите инди-рок треки</h2>
-      <form class="genre">
-        <div class="genre-answer">
+  const answers = [...question.options].map((option, index) => {
+    return `<div class="genre-answer">
           <div class="player-wrapper">
             <div class="player">
-              <audio></audio>
+              <audio src="${option.src}"></audio>
               <button class="player-control player-control--pause"></button>
               <div class="player-track">
                 <span class="player-status"></span>
               </div>
             </div>
           </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-1">
-          <label class="genre-answer-check" for="a-1"></label>
-        </div>
+          <input type="checkbox" name="answer" value="answer-${index}" id="a-${index}" data-genre="${option.genre}" data-src="${option.src}">
+          <label class="genre-answer-check" for="a-${index}"></label>
+        </div>`;
+  }).join(``);
 
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-2">
-          <label class="genre-answer-check" for="a-2"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-3">
-          <label class="genre-answer-check" for="a-3"></label>
-        </div>
-
-        <div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio></audio>
-              <button class="player-control player-control--play"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-1" id="a-4">
-          <label class="genre-answer-check" for="a-4"></label>
-        </div>
-
+  const task = `<div class="main-wrap">
+      <h2 class="title">${question.task}</h2>
+      <form class="genre">
+        ${answers}
         <button class="genre-answer-send" type="submit">Ответить</button>
       </form>
-    </div>
+    </div>`;
+
+  /**
+   * Разметка экрана и создание из нее DOM-элемента
+   */
+
+  const markup = `<section class="main main--level main--level-genre" id="genre">
+    ${getHeader()}
+    ${task}
   </section>`;
 
-const genreScreen = getElement(markup);
-const answerBtn = genreScreen.querySelector(`.genre-answer-send`);
-answerBtn.disabled = true;
-const answers = [...genreScreen.querySelectorAll(`input[type=checkbox]`)];
+  const genreScreen = getElement(markup);
 
-/**
- * Функция отключает кнопку "Ответить" в случае, если ни один из ответов не выбран
- */
+  const answerBtn = genreScreen.querySelector(`.genre-answer-send`);
+  answerBtn.disabled = true;
+  const checkboxes = [...genreScreen.querySelectorAll(`input[type=checkbox]`)];
 
-const onAnswerClick = () => {
-  answerBtn.disabled = !answers.some((answer) => {
-    return answer.checked;
+  /**
+   * Функция отключает кнопку "Ответить" в случае, если ни один из ответов не выбран
+   */
+
+  const onAnswerClick = () => {
+    answerBtn.disabled = !checkboxes.some((checkbox) => {
+      return checkbox.checked;
+    });
+  };
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener(`click`, onAnswerClick);
   });
+
+  /**
+   * Функция снимает галочки с чекбоксов
+   */
+
+  const resetForm = () => checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+    answerBtn.disabled = true;
+  });
+
+  /**
+   * Функция определяет действия для события 'click' на элементе playBtn:
+   * - запись ответа игрока
+   * - сбрасываение полей формы
+   * - переход к следующему вопросу
+   * @param {Object} evt
+   */
+
+  const onAnswerBtnClick = (evt) => {
+    evt.preventDefault();
+
+    /**
+     * Получение массива ответов игрока и массива ссылок на выбранные им композиции
+     */
+
+    const checkedCheckboxes = checkboxes.filter((checkbox) => {
+      return checkbox.checked === true;
+    });
+
+    const playersAnswers = checkedCheckboxes.map((checkbox) => {
+      return checkbox.dataset.genre;
+    });
+
+    const audioLinks = checkedCheckboxes.map((checkbox) => {
+      return checkbox.dataset.src;
+    });
+
+    /**
+     * Функция определяет, является ли выбранный игроком ответ правильным
+     * @returns {boolean}
+     */
+
+    const isAnswerCorrect = () => {
+      return playersAnswers.length === question.amountOfCorrectAnswers && playersAnswers.every((it) => {
+        return it === question.target;
+      });
+    };
+
+    question.playersAnswer = new Answer(isAnswerCorrect(), 30, audioLinks);
+
+    resetForm();
+    showNextQuestion();
+  };
+
+  answerBtn.addEventListener(`click`, onAnswerBtnClick);
+
+  return renderScreen(genreScreen);
 };
 
-answers.forEach((answer) => {
-  answer.addEventListener(`click`, onAnswerClick);
-});
-
-/**
- * Функция снимает галочки с чекбоксов
- */
-
-const resetForm = () => answers.forEach((answer) => {
-  answer.checked = false;
-});
-
-/**
- * Функция определяет действия для события 'click' на элементе playBtn:
- * - сбрасываение полей формы
- * - открытие экрана результатов
- * @param {Object} evt
- */
-
-const onAnswerBtnClick = (evt) => {
-  evt.preventDefault();
-  resetForm();
-  renderScreen(results[getRandomInteger(0, results.length - 1)]);
-};
-
-answerBtn.addEventListener(`click`, onAnswerBtnClick);
-
-export default genreScreen;
+export default showGenreScreen;

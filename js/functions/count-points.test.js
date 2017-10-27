@@ -1,12 +1,17 @@
 import assert from 'assert';
-import {countPoints, MIN_SCORE, MAX_SCORE, AMOUNT_OF_QUESTIONS, MIN_EARNED_POINTS, QUICK_TIME} from './count-points';
+import countPoints from './count-points';
 import {isNumInBetweenMinMax} from '../util';
+import {GameData} from '../data/game-data';
+
+const MIN_SCORE = (GameData.AMOUNT_OF_QUESTIONS - (GameData.MAX_ATTEMPTS - 1))
+    * GameData.counting.MIN_EARNED_POINTS - (GameData.MAX_ATTEMPTS - 1) * GameData.counting.LOST_POINTS;
+const MAX_SCORE = GameData.AMOUNT_OF_QUESTIONS * GameData.counting.MAX_EARNED_POINTS;
 
 describe(`Функция подсчета очков`, () => {
-  it(`должна вернуть -1, если игрок ответил меньше, чем на ${AMOUNT_OF_QUESTIONS} вопросов`, () => {
+  it(`должна вернуть -1, если игрок ответил меньше, чем на ${GameData.AMOUNT_OF_QUESTIONS} вопросов`, () => {
     let answers = [
-      {isAnswerCorrect: true, time: 13333},
-      {isAnswerCorrect: false, time: 17666}
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: false, time: 34}
     ];
     let attemptsLeft = 3;
     assert.equal(countPoints(answers, attemptsLeft), -1);
@@ -16,14 +21,14 @@ describe(`Функция подсчета очков`, () => {
     assert.equal(countPoints(answers, attemptsLeft), -1);
 
     answers = [
-      {isAnswerCorrect: true, time: 13333},
-      {isAnswerCorrect: false, time: 17666},
-      {isAnswerCorrect: true, time: 13333},
-      {isAnswerCorrect: false, time: 17666},
-      {isAnswerCorrect: true, time: 13333},
-      {isAnswerCorrect: false, time: 17666},
-      {isAnswerCorrect: true, time: 13333},
-      {isAnswerCorrect: false, time: 17666}
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 12},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 34},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: false, time: 56},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 12}
     ];
     attemptsLeft = 0;
     assert.equal(countPoints(answers, attemptsLeft), -1);
@@ -31,122 +36,122 @@ describe(`Функция подсчета очков`, () => {
 
   it(`должна вернуть -1, если у игрока закончились попытки`, () => {
     let answers = [
-      {isAnswerCorrect: true, time: 27657},
-      {isAnswerCorrect: false, time: 27657},
-      {isAnswerCorrect: true, time: 27657},
-      {isAnswerCorrect: false, time: 27657},
-      {isAnswerCorrect: true, time: 27657},
-      {isAnswerCorrect: false, time: 27657},
-      {isAnswerCorrect: true, time: 27657},
-      {isAnswerCorrect: false, time: 27657}
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: false, time: 23}
     ];
     let attemptsLeft = 0;
     assert.equal(countPoints(answers, attemptsLeft), -1);
 
     answers = [
-      {isAnswerCorrect: false, time: 27657},
-      {isAnswerCorrect: false, time: 27657},
-      {isAnswerCorrect: false, time: 27657},
-      {isAnswerCorrect: false, time: 27657}
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: false, time: 23}
     ];
     attemptsLeft = 0;
     assert.equal(countPoints(answers, attemptsLeft), -1);
   });
 
   it(`должна вернуть от ${MIN_SCORE} до ${MAX_SCORE} очков, 
-      если игрок ответил на ${AMOUNT_OF_QUESTIONS} вопросов и не истратил все попытки`, () => {
+      если игрок ответил на ${GameData.AMOUNT_OF_QUESTIONS} вопросов и не истратил все попытки`, () => {
     let answers = [
-      {isAnswerCorrect: true, time: 14333},
-      {isAnswerCorrect: false, time: 17896},
-      {isAnswerCorrect: true, time: 30500},
-      {isAnswerCorrect: true, time: 38000},
-      {isAnswerCorrect: true, time: 6000},
-      {isAnswerCorrect: false, time: 20000},
-      {isAnswerCorrect: true, time: 21000},
-      {isAnswerCorrect: true, time: 11000},
-      {isAnswerCorrect: true, time: 16546},
-      {isAnswerCorrect: true, time: 12345}
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: false, time: 3},
+      {isAnswerCorrect: true, time: 34},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 34},
+      {isAnswerCorrect: false, time: 43},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 23}
     ];
     let attemptsLeft = 2;
     assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
 
     answers = [
-      {isAnswerCorrect: true, time: 1000},
-      {isAnswerCorrect: false, time: 2000},
-      {isAnswerCorrect: false, time: 3000},
-      {isAnswerCorrect: true, time: 4000},
-      {isAnswerCorrect: true, time: 40000},
-      {isAnswerCorrect: false, time: 50000},
-      {isAnswerCorrect: true, time: 55000},
-      {isAnswerCorrect: true, time: 33000},
-      {isAnswerCorrect: true, time: 23000},
-      {isAnswerCorrect: true, time: 5000}
+      {isAnswerCorrect: true, time: 10},
+      {isAnswerCorrect: false, time: 20},
+      {isAnswerCorrect: false, time: 30},
+      {isAnswerCorrect: true, time: 40},
+      {isAnswerCorrect: true, time: 40},
+      {isAnswerCorrect: false, time: 50},
+      {isAnswerCorrect: true, time: 60},
+      {isAnswerCorrect: true, time: 30},
+      {isAnswerCorrect: true, time: 30},
+      {isAnswerCorrect: true, time: 20}
     ];
     attemptsLeft = 1;
     assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
 
     answers = [
-      {isAnswerCorrect: true, time: 14333},
-      {isAnswerCorrect: true, time: 17896},
-      {isAnswerCorrect: true, time: 30500},
-      {isAnswerCorrect: true, time: 38000},
-      {isAnswerCorrect: true, time: 6000},
-      {isAnswerCorrect: true, time: 20000},
-      {isAnswerCorrect: true, time: 21000},
-      {isAnswerCorrect: true, time: 11000},
-      {isAnswerCorrect: true, time: 16546},
-      {isAnswerCorrect: true, time: 12345}
+      {isAnswerCorrect: true, time: 34},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: true, time: 3},
+      {isAnswerCorrect: true, time: 4},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 34},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: true, time: 23}
     ];
     attemptsLeft = 4;
     assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
 
     answers = [
-      {isAnswerCorrect: false, time: 14333},
-      {isAnswerCorrect: true, time: 17896},
-      {isAnswerCorrect: true, time: 30500},
-      {isAnswerCorrect: true, time: 38000},
-      {isAnswerCorrect: true, time: 6000},
-      {isAnswerCorrect: true, time: 20000},
-      {isAnswerCorrect: true, time: 21000},
-      {isAnswerCorrect: true, time: 11000},
-      {isAnswerCorrect: true, time: 16546},
-      {isAnswerCorrect: true, time: 12345}
+      {isAnswerCorrect: false, time: 23},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: true, time: 3},
+      {isAnswerCorrect: true, time: 4},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: true, time: 23},
+      {isAnswerCorrect: true, time: 34},
+      {isAnswerCorrect: true, time: 45},
+      {isAnswerCorrect: true, time: 23}
     ];
     attemptsLeft = 3;
     assert(isNumInBetweenMinMax(countPoints(answers, attemptsLeft), MIN_SCORE, MAX_SCORE));
   });
 
-  it(`должна вернуть ${AMOUNT_OF_QUESTIONS * MIN_EARNED_POINTS}, если игрок ответил на все вопросы и 
-      каждый ответ занял ${QUICK_TIME} секунд и больше`, () => {
+  it(`должна вернуть ${GameData.AMOUNT_OF_QUESTIONS * GameData.counting.MIN_EARNED_POINTS}, если игрок ответил на все вопросы и 
+      каждый ответ занял ${GameData.QUICK_TIME} секунд и больше`, () => {
     let answers = [
-      {isAnswerCorrect: true, time: 51000},
-      {isAnswerCorrect: true, time: 30500},
-      {isAnswerCorrect: true, time: 51000},
-      {isAnswerCorrect: true, time: 30001},
-      {isAnswerCorrect: true, time: 30200},
-      {isAnswerCorrect: true, time: 50003},
-      {isAnswerCorrect: true, time: 44000},
-      {isAnswerCorrect: true, time: 33999},
-      {isAnswerCorrect: true, time: 32000},
-      {isAnswerCorrect: true, time: 50000}
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33},
+      {isAnswerCorrect: true, time: 33}
     ];
     let attemptsLeft = 4;
-    assert.equal(countPoints(answers, attemptsLeft), AMOUNT_OF_QUESTIONS * MIN_EARNED_POINTS);
+    assert.equal(countPoints(answers, attemptsLeft), GameData.AMOUNT_OF_QUESTIONS * GameData.counting.MIN_EARNED_POINTS);
   });
 
   it(`должна вернуть ${MAX_SCORE}, если игрок ответил на все вопросы 
-      и каждый ответ занял ${QUICK_TIME} секунд и больше`, () => {
+      и каждый ответ занял меньше ${GameData.QUICK_TIME} секунд`, () => {
     let answers = [
-      {isAnswerCorrect: true, time: 21000},
-      {isAnswerCorrect: true, time: 20500},
-      {isAnswerCorrect: true, time: 11000},
-      {isAnswerCorrect: true, time: 20001},
-      {isAnswerCorrect: true, time: 20200},
-      {isAnswerCorrect: true, time: 10003},
-      {isAnswerCorrect: true, time: 14000},
-      {isAnswerCorrect: true, time: 23999},
-      {isAnswerCorrect: true, time: 22000},
-      {isAnswerCorrect: true, time: 10000}
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12},
+      {isAnswerCorrect: true, time: 12}
     ];
     let attemptsLeft = 4;
     assert.equal(countPoints(answers, attemptsLeft), MAX_SCORE);
