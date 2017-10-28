@@ -3,22 +3,24 @@
  * @exports - функция создания экрана
  */
 
-import getElement from '../functions/get-element';
-import getHeader from '../markup-parts/get-header';
-import showNextQuestion from '../functions/show-next-question';
+import renderElement from '../functions/render-element';
+import showNextQuestion from '../functions/show-next-screen';
 import Answer from '../data/answer';
-import renderScreen from '../functions/render-screen';
+import showScreen from '../functions/show-screen';
+import getScreenMarkup from '../markup/get-screen-markup';
+import getTask from '../markup/get-task';
+import getAnswers from '../markup/get-answers';
 
 /**
  * Функция создает экран игры с вопросом типа `genre` и добавляет click-listener к кнопке `Ответить`
  * о умолчанию кнопка `Ответить` отключена и включается, когда выбран хотя бы один вариант ответа
  * @param {Object} question - объект вопроса вида: {
- * @param {Object} question.audioLink: {String}, - ссылка на песню
- * @param {Object} question.amountOfCorrectAnswers: {Number}, - количество композиций с целевым жанром
- * @param {Object} question.options: Set(3), - 3 объекта с информацией о песнях
- * @param {Object} question.target: {Object}, - рандомная песня из options, исполнителя которой надо определить
- * @param {Object} question.task: {String}, - текст задания
- * @param {Object} question.type: {String} - тип вопроса `artist`
+ * @param {String} question.audioLink - ссылка на песню
+ * @param {Number} question.amountOfCorrectAnswers - количество композиций с целевым жанром
+ * @param {Set} question.options - 4 объекта с информацией о песнях
+ * @param {Object} question.target - рандомная песня из options, жанр которой берем для вопроса
+ * @param {String} question.task - текст задания
+ * @param {String} question.type - тип вопроса `genre`
  * @return {Node} genreScreen - DOM-элемент экрана
  */
 
@@ -28,40 +30,15 @@ const showGenreScreen = (question) => {
    * Части разметки экрана
    */
 
-  const answers = [...question.options].map((option, index) => {
-    return `<div class="genre-answer">
-          <div class="player-wrapper">
-            <div class="player">
-              <audio src="${option.src}"></audio>
-              <button class="player-control player-control--pause"></button>
-              <div class="player-track">
-                <span class="player-status"></span>
-              </div>
-            </div>
-          </div>
-          <input type="checkbox" name="answer" value="answer-${index}" id="a-${index}" data-genre="${option.genre}" data-src="${option.src}">
-          <label class="genre-answer-check" for="a-${index}"></label>
-        </div>`;
-  }).join(``);
-
-  const task = `<div class="main-wrap">
-      <h2 class="title">${question.task}</h2>
-      <form class="genre">
-        ${answers}
-        <button class="genre-answer-send" type="submit">Ответить</button>
-      </form>
-    </div>`;
+  const answers = getAnswers(question.type, question.options);
+  const task = getTask(question.type, question.task, answers);
 
   /**
    * Разметка экрана и создание из нее DOM-элемента
    */
 
-  const markup = `<section class="main main--level main--level-genre" id="genre">
-    ${getHeader()}
-    ${task}
-  </section>`;
-
-  const genreScreen = getElement(markup);
+  const markup = getScreenMarkup(task, question.type);
+  const genreScreen = renderElement(markup);
 
   const answerBtn = genreScreen.querySelector(`.genre-answer-send`);
   answerBtn.disabled = true;
@@ -136,7 +113,7 @@ const showGenreScreen = (question) => {
 
   answerBtn.addEventListener(`click`, onAnswerBtnClick);
 
-  return renderScreen(genreScreen);
+  return showScreen(genreScreen);
 };
 
 export default showGenreScreen;

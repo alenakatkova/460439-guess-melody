@@ -5,6 +5,7 @@ import countPoints from './count-points';
 import showResultScreen from '../screens/result';
 import {GameResults, resultScreenContent} from '../data/results';
 import showResults from './show-results';
+import getResultMarkup from '../markup/get-result-markup'
 
 let currentState = Object.assign({}, initialState);
 
@@ -23,9 +24,10 @@ const showNextScreen = () => {
    * Функция считает полученные игроком очки и добавляет их в массив с результатами других игроков
    */
 
-  const addScoreToAllResults = () => {
-    currentState.score = countPoints(currentState.answers, GameData.MAX_ATTEMPTS - currentState.mistakes);
-    stats.push(currentState.score);
+  const addScoreToAllResults = (state) => {
+    state.score = countPoints(state.answers, GameData.MAX_ATTEMPTS - state.mistakes);
+    stats.push(state.score);
+    return state;
   };
 
   /**
@@ -52,19 +54,19 @@ const showNextScreen = () => {
   };
 
   if (currentState.mistakes === GameData.MAX_ATTEMPTS) {
-    addScoreToAllResults();
+    currentState = addScoreToAllResults(currentState);
+    console.log(currentState);
     const game = new GameResults(currentState.score, 4, 250);
-    showResultScreen(resultScreenContent.attemptsOut.title,
-        showResults(stats, game), ``, resultScreenContent.attemptsOut.button);
+    const resultScreenMarkup = getResultMarkup(`attemptsOut`, showResults(stats, game));
+    showResultScreen(resultScreenMarkup);
     resetGameData();
 
   } else if (currentState.currentQuestionIndex === 10) {
-    addScoreToAllResults();
+    currentState = addScoreToAllResults(currentState);
     const game = new GameResults(currentState.score, 0, 250);
-    showResultScreen(resultScreenContent.win.title,
-        resultScreenContent.win.message1(5, 0, 13, 1, 1),
-        showResults(stats, game), resultScreenContent.win.button);
-    resetGameData();
+    const resultScreenMarkup = getResultMarkup(`win`, resultScreenContent.win.message1(5, 0, 13, 1, 1),
+        showResults(stats, game));
+    showResultScreen(resultScreenMarkup);
 
   } else if (tasks[currentState.currentQuestionIndex].type === `artist`) {
     showQuestion(showArtistScreen);

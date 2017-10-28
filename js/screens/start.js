@@ -3,37 +3,28 @@
  * @exports DOM-элемент стартового экрана игры
  */
 
-import getElement from '../functions/get-element';
-import showNextQuestion from '../functions/show-next-question';
+import renderElement from '../functions/render-element';
+import showNextQuestion from '../functions/show-next-screen';
+import showScreen from '../functions/show-screen';
+import startScreenMarkup from '../markup/start-screen-markup';
 
-/**
- * Разметка стартового экрана
- */
+const showStartScreen = () => {
+  const startScreen = renderElement(startScreenMarkup);
+  const playBtn = startScreen.querySelector(`.main-play`);
 
-const markup = `<section class="main main--welcome" id="start">
-    <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
-    <button class="main-play">Начать игру</button>
-    <h2 class="title main-title">Правила игры</h2>
-    <p class="text main-text">
-      Правила просты&nbsp;— за&nbsp;5 минут ответить на все вопросы.<br>
-      Ошибиться можно 3 раза.<br>
-      Удачи!
-    </p>
-  </section>`;
+  /**
+   * Функция определяет действия для события 'click' на элементе playBtn
+   * @param {Object} evt
+   */
 
-const startScreen = getElement(markup);
-const playBtn = startScreen.querySelector(`.main-play`);
+  const onPlayBtnClick = (evt) => {
+    evt.preventDefault();
+    showNextQuestion();
+  };
 
-/**
- * Функция определяет действия для события 'click' на элементе playBtn
- * @param {Object} evt
- */
+  playBtn.addEventListener(`click`, onPlayBtnClick);
 
-const onPlayBtnClick = (evt) => {
-  evt.preventDefault();
-  showNextQuestion();
+  return showScreen(startScreen);
 };
 
-playBtn.addEventListener(`click`, onPlayBtnClick);
-
-export default startScreen;
+export default showStartScreen;

@@ -2,8 +2,7 @@
  * @export - функция, добавляющая слушатель события 'click' на кнопку перезагрузки игры
  */
 
-import renderScreen from './render-screen';
-import startScreen from '../screens/start';
+import showStartScreen from '../screens/start';
 
 /**
  * Функция добавляет к кнопке перезагрузки игры слушатель события 'click'
@@ -14,7 +13,7 @@ import startScreen from '../screens/start';
 const initializeReplay = (screen) => {
   const replayBtn = screen.querySelector(`.main-replay`);
   const onReplayBtnClick = () => {
-    renderScreen(startScreen);
+    showStartScreen();
   };
   replayBtn.addEventListener(`click`, onReplayBtnClick);
 };
