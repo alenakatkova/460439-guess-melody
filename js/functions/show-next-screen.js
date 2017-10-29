@@ -5,74 +5,60 @@ import countPoints from './count-points';
 import showResultScreen from '../screens/result';
 import {GameResults, resultScreenContent} from '../data/results';
 import showResults from './show-results';
-import getResultMarkup from '../markup/get-result-markup'
+import getResultMarkup from '../markup/get-result-markup';
 
-let currentState = Object.assign({}, initialState);
-
-const showNextScreen = () => {
-  const tasks = currentState.tasks;
-  currentState.answers = tasks.map((task) => {
+const showNextScreen = (state) => {
+  const tasks = state.tasks;
+  state.answers = tasks.map((task) => {
     return task.playersAnswer;
   });
-
-  if (currentState.currentQuestionIndex > 0
-      && currentState.answers[currentState.currentQuestionIndex - 1].isAnswerCorrect === false) {
-    currentState.mistakes += 1;
-  }
 
   /**
    * Функция считает полученные игроком очки и добавляет их в массив с результатами других игроков
    */
 
-  const addScoreToAllResults = (state) => {
-    state.score = countPoints(state.answers, GameData.MAX_ATTEMPTS - state.mistakes);
-    stats.push(state.score);
-    return state;
-  };
-
-  /**
-   *  Функция отрисовывает вопрос и обновляет счетчик вопросов
-   * @param {Function} type
-   */
-
-  const showQuestion = (type) => {
-    type(tasks[currentState.currentQuestionIndex]);
-    currentState.currentQuestionIndex += 1;
+  const addScoreToAllResults = (stateX) => {
+    stateX.score = countPoints(stateX.answers, GameData.MAX_ATTEMPTS - stateX.mistakes);
+    stats.push(stateX.score);
+    return stateX;
   };
 
   /**
    * Функция сбрасывает статистику игры
    */
 
-  const resetGameData = () => {
+  const resetGameData = (currentState) => {
     currentState = Object.assign({}, initialState);
     let i = 0;
     while (tasks[i].playersAnswer !== null) {
       tasks[i].playersAnswer = null;
       i++;
     }
+
+    return currentState;
   };
 
-  if (currentState.mistakes === GameData.MAX_ATTEMPTS) {
-    currentState = addScoreToAllResults(currentState);
-    console.log(currentState);
-    const game = new GameResults(currentState.score, 4, 250);
+  console.log(state.mistakes);
+  if (state.mistakes === 4) {
+    state = addScoreToAllResults(state);
+    const game = new GameResults(state.score, 4, 250);
     const resultScreenMarkup = getResultMarkup(`attemptsOut`, showResults(stats, game));
     showResultScreen(resultScreenMarkup);
-    resetGameData();
+    resetGameData(state);
 
-  } else if (currentState.currentQuestionIndex === 10) {
-    currentState = addScoreToAllResults(currentState);
-    const game = new GameResults(currentState.score, 0, 250);
+  } else if (state.currentQuestionIndex === 10) {
+    state = addScoreToAllResults(state);
+    const game = new GameResults(state.score, 0, 250);
     const resultScreenMarkup = getResultMarkup(`win`, resultScreenContent.win.message1(5, 0, 13, 1, 1),
-        showResults(stats, game));
+      showResults(stats, game));
     showResultScreen(resultScreenMarkup);
+    resetGameData(state);
 
-  } else if (tasks[currentState.currentQuestionIndex].type === `artist`) {
-    showQuestion(showArtistScreen);
+  } else if (tasks[state.currentQuestionIndex].type === `artist`) {
+    showArtistScreen(state);
 
-  } else if (tasks[currentState.currentQuestionIndex].type === `genre`) {
-    showQuestion(showGenreScreen);
+  } else if (tasks[state.currentQuestionIndex].type === `genre`) {
+    showGenreScreen(state);
   }
 };
 

@@ -1,5 +1,5 @@
 import renderElement from '../functions/render-element';
-import initializeReplay from '../functions/replay';
+import startScreen from '../screens/start-screen';
 import showScreen from '../functions/show-screen';
 
 const showResultScreen = (markup) => {
@@ -8,6 +8,14 @@ const showResultScreen = (markup) => {
   /**
    * Добавление взаимодействия пользователя с экраном
    */
+
+  const initializeReplay = (screen) => {
+    const replayBtn = screen.querySelector(`.main-replay`);
+    const onReplayBtnClick = () => {
+      showScreen(startScreen());
+    };
+    replayBtn.addEventListener(`click`, onReplayBtnClick);
+  };
 
   initializeReplay(resultScreen);
 
