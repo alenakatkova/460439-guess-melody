@@ -4,19 +4,20 @@ import getTask from '../markup/get-task';
 import getAnswers from '../markup/get-answers';
 
 export default class ArtistScreenView extends AbstractView {
-  constructor(type, options, link, question) {
+  constructor(type, options, link, question, mistakes) {
     super();
     this._type = type;
     this._options = options;
     this._link = link;
     this._question = question;
+    this._mistakes = mistakes;
 
     this._answers = getAnswers(this._type, this._options);
     this._task = getTask(this._type, this._question, this._answers, this._link);
   }
 
   get template() {
-    return getScreenMarkup(this._task, this._type);
+    return getScreenMarkup(this._task, this._type, this._mistakes);
   }
 
   bind() {

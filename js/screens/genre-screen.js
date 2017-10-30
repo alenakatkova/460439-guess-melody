@@ -3,12 +3,13 @@ import showNextScreen from '../functions/show-next-screen';
 import showScreen from '../functions/show-screen';
 
 import Answer from '../data/answer';
+import { showMistakes } from '../markup/get-header';
 
 export default (state) => {
   const newState = Object.assign({}, state);
   const question = newState.tasks[newState.currentQuestionIndex];
 
-  const genreScreen = new GenreScreenView(question.type, question.options, question.audioLink, question.task);
+  const genreScreen = new GenreScreenView(question.type, question.options, question.audioLink, question.task, newState.mistakes);
 
   const resetForm = () => genreScreen.checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
@@ -52,6 +53,7 @@ export default (state) => {
 
     if (!isAnswerCorrect()) {
       newState.mistakes += 1;
+      showMistakes(newState.mistakes);
     }
 
     resetForm();

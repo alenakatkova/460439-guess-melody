@@ -1,4 +1,14 @@
-const mistakesContainer = `<div class="main-mistakes"></div>`;
+const mistake = `<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`;
+
+const showMistakes = (num) => {
+  let arr = [];
+  if (num > 0) {
+    for (let i = 0; i < num; i++) {
+      arr.push(mistake);
+    }
+  }
+  return arr.join(``);
+};
 
 const timer = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
     <circle cx="390" cy="390" r="370" class="timer-line" style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
@@ -9,9 +19,4 @@ const timer = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 
     </div>
     </svg>`;
 
-const getHeader = () => {
-  return `${timer}
-    ${mistakesContainer}`;
-};
-
-export default getHeader;
+export {timer, showMistakes};

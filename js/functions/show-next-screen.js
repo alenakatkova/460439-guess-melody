@@ -51,7 +51,7 @@ const showNextScreen = (state) => {
 
     const resultScreenMarkup = getResultMarkup(`win`, resultScreenContent.win.message1(5, 0, 13, 1, 1), showResults(stats, game));
     showResultScreen(resultScreenMarkup);
-    
+
     resetGameData(state);
 
   } else if (tasks[state.currentQuestionIndex].type === `artist`) {
