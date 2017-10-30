@@ -1,6 +1,8 @@
 import StartScreenView from './start-screen-view';
 import { initialState } from '../data/game-data';
-import showArtistScreen from './artist'
+//import showArtistScreen from './artist';
+
+import showArtistScreen from '../screens/artist-screen';
 
 const startGame = () => {
   const newState = Object.assign({}, initialState);

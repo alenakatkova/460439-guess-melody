@@ -1,6 +1,6 @@
 import {GameData, initialState, stats} from '../data/game-data';
-import showArtistScreen from '../screens/artist';
-import showGenreScreen from '../screens/genre';
+import showArtistScreen from '../screens/artist-screen';
+import showGenreScreen from '../screens/genre-screen';
 import countPoints from './count-points';
 import showResultScreen from '../screens/result';
 import {GameResults, resultScreenContent} from '../data/results';
@@ -13,6 +13,7 @@ const showNextScreen = (state) => {
     return task.playersAnswer;
   });
 
+  console.log(state.answers);
   /**
    * Функция считает полученные игроком очки и добавляет их в массив с результатами других игроков
    */
@@ -29,29 +30,28 @@ const showNextScreen = (state) => {
 
   const resetGameData = (currentState) => {
     currentState = Object.assign({}, initialState);
-    let i = 0;
-    while (tasks[i].playersAnswer !== null) {
+    for (let i = 0; i < 10; i++) {
       tasks[i].playersAnswer = null;
-      i++;
     }
-
     return currentState;
   };
 
-  console.log(state.mistakes);
   if (state.mistakes === 4) {
     state = addScoreToAllResults(state);
     const game = new GameResults(state.score, 4, 250);
+
     const resultScreenMarkup = getResultMarkup(`attemptsOut`, showResults(stats, game));
     showResultScreen(resultScreenMarkup);
+
     resetGameData(state);
 
   } else if (state.currentQuestionIndex === 10) {
     state = addScoreToAllResults(state);
     const game = new GameResults(state.score, 0, 250);
-    const resultScreenMarkup = getResultMarkup(`win`, resultScreenContent.win.message1(5, 0, 13, 1, 1),
-      showResults(stats, game));
+
+    const resultScreenMarkup = getResultMarkup(`win`, resultScreenContent.win.message1(5, 0, 13, 1, 1), showResults(stats, game));
     showResultScreen(resultScreenMarkup);
+    
     resetGameData(state);
 
   } else if (tasks[state.currentQuestionIndex].type === `artist`) {
