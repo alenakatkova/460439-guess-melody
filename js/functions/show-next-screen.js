@@ -1,6 +1,5 @@
 import {GameData, initialState, stats} from '../data/game-data';
-import showArtistScreen from '../screens/artist-screen';
-import showGenreScreen from '../screens/genre-screen';
+import showQuestionScreen from '../screens/question-screen';
 import countPoints from './count-points';
 import showResultScreen from '../screens/result-screen';
 import {GameResults} from '../data/results';
@@ -58,11 +57,8 @@ const showNextScreen = (state) => {
   } else if (state.currentQuestionIndex === 10) {
     endGame(`win`);
 
-  } else if (tasks[state.currentQuestionIndex].type === `artist`) {
-    showArtistScreen(state);
-
-  } else if (tasks[state.currentQuestionIndex].type === `genre`) {
-    showGenreScreen(state);
+  } else {
+    showQuestionScreen(state);
   }
 };
 
