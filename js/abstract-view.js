@@ -1,5 +1,4 @@
 import renderElement from './functions/render-element';
-import showScreen from './functions/show-screen'
 
 class AbstractView {
   /**

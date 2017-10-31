@@ -1,6 +1,6 @@
 import {GameData} from '../data/game-data';
 
-const getRules = () => {
+const getRulesMarkup = () => {
   return `<h2 class="title main-title">Правила игры</h2>
     <p class="text main-text">
       Правила просты&nbsp;— за&nbsp;${Math.floor(GameData.MAX_TIME / 60)} минут ответить на все вопросы.<br>
@@ -9,4 +9,4 @@ const getRules = () => {
     </p>`;
 };
 
-export default getRules;
+export default getRulesMarkup;

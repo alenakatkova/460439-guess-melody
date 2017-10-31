@@ -13,8 +13,9 @@ const getTimer = (value) => {
       if (this.value > 0) {
         this.value -= 1;
       }
-
-      return {value: this.value};
+      return {
+        value: this.value
+      };
     }
   };
 };

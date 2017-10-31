@@ -1,11 +1,11 @@
-const getAnswers = (type, options) => {
+const getAnswersMarkup = (type, options) => {
   const answers = [...options].map((option, index) => {
     if (type === `artist`) {
       return `<div class="main-answer-wrapper">
           <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}"/>
           <label class="main-answer" for="answer-${index}">
             <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="${option.artist}" data-link="${option.link}" width="134" height="134">
+                 alt="${option.artist}" data-link="${option.src}" width="134" height="134">
             ${option.artist}
           </label>
         </div>`;
@@ -29,4 +29,4 @@ const getAnswers = (type, options) => {
   return answers;
 };
 
-export default getAnswers;
+export default getAnswersMarkup;

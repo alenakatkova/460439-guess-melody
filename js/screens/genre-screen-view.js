@@ -1,7 +1,7 @@
 import AbstractView from '../abstract-view';
-import getScreenMarkup from '../markup/get-screen-markup';
-import getTask from '../markup/get-task';
-import getAnswers from '../markup/get-answers';
+import getScreenMarkup from '../markup/get-question-markup';
+import getTaskMarkup from '../markup/get-task-markup';
+import getAnswersMarkup from '../markup/get-answers-markup';
 
 export default class GenreScreenView extends AbstractView {
   constructor(type, options, link, question, mistakes, time) {
@@ -14,8 +14,8 @@ export default class GenreScreenView extends AbstractView {
     this._mistakes = mistakes;
     this._time = time;
 
-    this._answers = getAnswers(this._type, this._options);
-    this._task = getTask(this._type, this._question, this._answers, this._link);
+    this._answers = getAnswersMarkup(this._type, this._options);
+    this._task = getTaskMarkup(this._type, this._question, this._answers, this._link);
 
     this.answerBtn = this.element.querySelector(`.genre-answer-send`);
     this.checkboxes = [...this.element.querySelectorAll(`input[type=checkbox]`)];

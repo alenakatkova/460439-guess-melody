@@ -1,5 +1,5 @@
 import AbstractView from '../abstract-view';
-import getResultMarkup from '../markup/get-result-markup'
+import getResultMarkup from '../markup/get-result-markup';
 
 export default class ResultScreenView extends AbstractView {
   constructor(resultType, mainContent, extraContent = ``) {

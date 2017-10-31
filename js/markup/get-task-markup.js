@@ -1,8 +1,8 @@
-const getTask = (type, task, options, link = ``) => {
-  let titleClass,
-    mainPart,
-    formClass,
-    button;
+const getTaskMarkup = (type, task, options, link = ``) => {
+  let titleClass;
+  let mainPart;
+  let formClass;
+  let button;
 
   if (type === `artist`) {
     titleClass = `title main-title`;
@@ -34,4 +34,4 @@ const getTask = (type, task, options, link = ``) => {
     </div>`;
 };
 
-export default getTask;
+export default getTaskMarkup;

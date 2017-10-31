@@ -5,6 +5,11 @@ import countPoints from './count-points';
 import showResultScreen from '../screens/result-screen';
 import {GameResults} from '../data/results';
 
+/**
+ * Функция переключает экраны игры
+ * @param {Object} state - текущее состояние игры со всеми данными
+ */
+
 const showNextScreen = (state) => {
   const tasks = state.tasks;
   state.answers = tasks.map((task) => {
@@ -29,12 +34,20 @@ const showNextScreen = (state) => {
     return currentState;
   };
 
+  /**
+   * Функция заканчивает игру: сохраняет набранные очки, генерирует объект с результатами игры,
+   * показывает экран результата и обнуляет состояние игры
+   * @param typeOfResult
+   */
+
   const endGame = (typeOfResult) => {
     state = addScoreToAllResults(state);
     const game = new GameResults(state.score, state.mistakes, state.time);
     showResultScreen(typeOfResult, state, game);
     resetGameData(state);
   };
+
+  /** Опеределям, какой экран будет показан следующим */
 
   if (state.mistakes === GameData.MAX_ATTEMPTS) {
     endGame(`attemptsOut`);

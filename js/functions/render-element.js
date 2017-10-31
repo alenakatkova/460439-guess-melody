@@ -1,7 +1,7 @@
 /**
  * @exports - функция, создающая DOM-элемент:
  * @param {String} markup - строка с разметкой DOM-элемента
- * @returns - DOM-элемент
+ * @returns {Node} DOM-элемент
  */
 
 const renderElement = (markup) => {

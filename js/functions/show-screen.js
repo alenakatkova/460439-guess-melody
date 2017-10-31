@@ -1,5 +1,5 @@
 /**
- * @exports - функция, отрисовывающая экран игры
+ * @exports - функция, показывающая экран игры
  */
 
 const container = document.querySelector(`.main`);

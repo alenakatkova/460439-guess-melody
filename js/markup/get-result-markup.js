@@ -1,5 +1,5 @@
 import {resultScreenContent} from '../data/results';
-import logo from './logo';
+import logo from './logo-markup';
 
 const getResultMarkup = (resultType, mainContent, extraContent = ``) => {
   let content;
