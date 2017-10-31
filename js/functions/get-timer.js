@@ -1,5 +1,3 @@
-const TIMEOUT_MESSAGE = `Время вышло`;
-
 /**
  * Функция создает таймер обратного отсчета
  * @param {Number} time - время, в течение которого будет работать таймер, в секундах
@@ -7,13 +5,18 @@ const TIMEOUT_MESSAGE = `Время вышло`;
  * tick(), уменьшающий значение времени на заданное число
  */
 
-const getTimer = (time) => {
+const getTimer = (value) => {
   return {
-    value: time,
+    value,
+
     tick() {
-      return (time === 0) ? TIMEOUT_MESSAGE : getTimer(time - 1);
+      if (this.value > 0) {
+        this.value -= 1;
+      }
+
+      return {value: this.value};
     }
   };
 };
 
-export {TIMEOUT_MESSAGE, getTimer};
+export default getTimer;

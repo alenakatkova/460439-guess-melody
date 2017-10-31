@@ -10,7 +10,7 @@ import {resultScreenContent} from '../data/results';
  * @returns {String} message - сообщение о выигрыше / проигрыше
  */
 
-const showResults = (allScores, playersResults) => {
+const generateFinishMessage = (allScores, playersResults) => {
   if (playersResults.time === 0) {
     return resultScreenContent.timeOut.message;
   } else if (playersResults.attemptsLeft === 0) {
@@ -29,4 +29,4 @@ const showResults = (allScores, playersResults) => {
   }
 };
 
-export default showResults;
+export default generateFinishMessage;

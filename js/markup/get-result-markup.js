@@ -8,8 +8,8 @@ const getResultMarkup = (resultType, mainContent, extraContent = ``) => {
 
   switch (resultType) {
     case `win`:
-      content = `<div class="main-stat">${mainContent}</div>
-          <span class="main-comparison">${extraContent}</span>`;
+      content = `<div class="main-stat">${extraContent}</div>
+          <span class="main-comparison">${mainContent}</span>`;
       button = `<span role="button" tabindex="0" class="main-replay">${resultScreenContent.win.button}</span>`;
       title = `<h2 class="title">${resultScreenContent.win.title}</h2>`;
       break;

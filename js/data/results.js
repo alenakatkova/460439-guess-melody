@@ -5,6 +5,7 @@
  * - timeOut - закончилось время
  * @export {Object} resultScreenContent
  */
+import {GameData} from './game-data';
 
 const resultScreenContent = {
   win: {
@@ -39,8 +40,8 @@ const resultScreenContent = {
 
 const GameResults = function (playersScore, mistakesMade, timeLeft) {
   this.score = playersScore;
-  this.attemptsLeft = 4 - mistakesMade;
-  this.time = 300 - timeLeft;
+  this.attemptsLeft = GameData.MAX_ATTEMPTS - mistakesMade;
+  this.time = timeLeft;
 };
 
 export {resultScreenContent, GameResults};

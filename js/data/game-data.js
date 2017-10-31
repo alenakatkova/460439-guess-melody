@@ -8,8 +8,8 @@ const GameData = {
   QUESTIONS_TYPES: [`artist`, `genre`],
   AMOUNT_OF_QUESTIONS: 10,
   MAX_ATTEMPTS: 4,
-  MAX_TIME: 300,
-  QUICK_TIME: 30,
+  MAX_TIME: 40,
+  QUICK_TIME: 4,
   counting: {
     LOST_POINTS: 2,
     MIN_EARNED_POINTS: 1,

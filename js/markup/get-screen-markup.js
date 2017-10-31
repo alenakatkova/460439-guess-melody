@@ -1,8 +1,8 @@
-import {showMistakes, timer} from './get-header';
+import { showMistakes, showTimer, timer } from './get-header'
 
-const getScreenMarkup = (task, type, num) => {
+const getScreenMarkup = (task, type, num, timeInSec) => {
   return `<section class="main main--level main--level-${type}" id="${type}">
-    ${timer}
+    ${showTimer(timeInSec)}
     <div class="main-mistakes">${showMistakes(num)}</div>
     ${task}
   </section>`;

@@ -1,5 +1,5 @@
 import assert from 'assert';
-import showResults from './show-results';
+import showResults from './generate-finish-message';
 import {resultScreenContent} from '../data/results';
 
 describe(`Функция вывода результата`, () => {

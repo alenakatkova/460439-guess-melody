@@ -4,23 +4,27 @@ import getTask from '../markup/get-task';
 import getAnswers from '../markup/get-answers';
 
 export default class ArtistScreenView extends AbstractView {
-  constructor(type, options, link, question, mistakes) {
+  constructor(type, options, link, question, mistakes, time) {
     super();
     this._type = type;
     this._options = options;
     this._link = link;
     this._question = question;
     this._mistakes = mistakes;
+    this._time = time;
 
     this._answers = getAnswers(this._type, this._options);
     this._task = getTask(this._type, this._question, this._answers, this._link);
   }
 
   get template() {
-    return getScreenMarkup(this._task, this._type, this._mistakes);
+    return getScreenMarkup(this._task, this._type, this._mistakes, this._time);
   }
 
   bind() {
+    this.minutes = this.element.querySelector(`.timer-value-mins`);
+    this.seconds = this.element.querySelector(`.timer-value-secs`);
+
     const radioButtons = this.element.querySelector(`.main-list`);
     radioButtons.addEventListener(`click`, (evt) => {
       evt.preventDefault();
@@ -30,5 +34,10 @@ export default class ArtistScreenView extends AbstractView {
 
   onRadioBtnClick() {
 
+  }
+
+  updateTime(timeLeft) {
+    this.minutes.textContent = Math.floor(timeLeft / 60);
+    this.seconds.textContent = (timeLeft % 60) > 9 ? (timeLeft % 60) : `0` + (timeLeft % 60);
   }
 }

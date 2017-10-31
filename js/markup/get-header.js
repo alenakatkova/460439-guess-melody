@@ -10,13 +10,15 @@ const showMistakes = (num) => {
   return arr.join(``);
 };
 
-const timer = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
+const showTimer = (timeInSec) => {
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
     <circle cx="390" cy="390" r="370" class="timer-line" style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
     <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-    <span class="timer-value-mins">05</span>
+    <span class="timer-value-mins">${Math.floor(timeInSec / 60)}</span>
     <span class="timer-value-dots">:</span>
-    <span class="timer-value-secs">00</span>
+    <span class="timer-value-secs">${(timeInSec % 60) > 9 ? (timeInSec % 60) : `0` + (timeInSec % 60)}</span>
     </div>
     </svg>`;
+};
 
-export {timer, showMistakes};
+export {mistake, showTimer, showMistakes};
