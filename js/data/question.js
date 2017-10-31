@@ -30,8 +30,6 @@ const Question = function (type) {
   this.type = type;
   this.playersAnswer = null;
   if (this.type === `artist`) {
-
-
     // выбираем 3 рандомных песни из списка композиций, их исполнители будут вариантами ответов на вопрос
     this.options = getRandomOptions(3);
 

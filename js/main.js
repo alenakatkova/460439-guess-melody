@@ -2,7 +2,7 @@
  * Стартовый экран игры отрисовывается при загрузке страницы
  */
 
-import startScreen from './screens/start';
-import renderScreen from './functions/render-screen';
+import showScreen from './functions/show-screen';
+import startScreen from './screens/start-screen';
 
-renderScreen(startScreen);
+showScreen(startScreen());

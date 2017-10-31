@@ -1,5 +1,5 @@
 /**
- * @exports - функция, отрисовывающая экран игры
+ * @exports - функция, показывающая экран игры
  */
 
 const container = document.querySelector(`.main`);
@@ -9,11 +9,11 @@ const container = document.querySelector(`.main`);
  * @param {Node} screen - узел экрана игры, который необходимо добавить в контейнер
  */
 
-const renderScreen = (screen) => {
+const showScreen = (screen) => {
   if (container.firstChild) {
     container.removeChild(container.firstChild);
   }
   container.appendChild(screen);
 };
 
-export default renderScreen;
+export default showScreen;

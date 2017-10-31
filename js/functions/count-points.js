@@ -5,7 +5,7 @@ import {GameData} from '../data/game-data';
  * @param {Array} answers - массив ответов пользователя
  * Каждый ответ - это объект вида {isAnswerCorrect: {Boolean}, TIME: {Number}, audio: {String|Array}},
  * в котором isAnswerCorrect указывает на правильность ответа, а TIME - на время в мс, за которое игрок дал ответ
- * @param {Number} attemptsLeft - количество оставшихся нот
+ * @param {Number} attemptsLeft - количество оставшихся попыток
  * @returns {Number} - количество набранных очков
  */
 

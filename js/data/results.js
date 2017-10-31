@@ -1,10 +1,10 @@
 /**
- * Контент для экранов результатов трех типов:
- * - win - победа
- * - attemptsOut - закончились жизни
- * - timeOut - закончилось время
- * @export {Object} resultScreenContent
+ * @export
+ * - {Object} resultScreenContent - контент для экранов результатов трех типов (win, attemptsOt, timeOut)
+ * - функция-конструктор объекта резальтутов игры
  */
+
+import {GameData} from './game-data';
 
 const resultScreenContent = {
   win: {
@@ -30,7 +30,7 @@ const resultScreenContent = {
 };
 
 /**
- *
+ * Функция создает объект с результатами последней игры
  * @param {Number} playersScore
  * @param {Number} mistakesMade
  * @param {Number} timeLeft
@@ -39,8 +39,8 @@ const resultScreenContent = {
 
 const GameResults = function (playersScore, mistakesMade, timeLeft) {
   this.score = playersScore;
-  this.attemptsLeft = 4 - mistakesMade;
-  this.time = 300 - timeLeft;
+  this.attemptsLeft = GameData.MAX_ATTEMPTS - mistakesMade;
+  this.time = timeLeft;
 };
 
 export {resultScreenContent, GameResults};

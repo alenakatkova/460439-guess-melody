@@ -1,5 +1,8 @@
 /**
- * Структура данных, описывающих игру
+ * @export
+ * {Object} GameData структура данных, описывающих игру
+ * {Object} InitialState структура данных, описывающих начальное состояние игры
+ * {Array} stats массив с результатами прошлых игр для тестирования игры
  */
 
 import getQuestions from '../data/question';
@@ -17,10 +20,6 @@ const GameData = {
   }
 };
 
-/**
- * Структура данных, описывающих начальное состояние в игре
- */
-
 const initialState = {
   mistakes: 0,
   time: GameData.MAX_TIME,
@@ -29,10 +28,6 @@ const initialState = {
   score: 0,
   tasks: getQuestions()
 };
-
-/**
- * Статистика прошлых игр
- */
 
 let stats = [12, 2, 20, 8];
 

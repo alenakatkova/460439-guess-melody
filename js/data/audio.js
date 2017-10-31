@@ -1,3 +1,5 @@
+/** @export музыка для тестирования игры */
+
 const audio = [
   {
     artist: `Kevin MacLeod`,
