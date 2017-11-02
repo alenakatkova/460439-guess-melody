@@ -35,7 +35,7 @@ const Question = function (type) {
 
     // одну из песен делаем вопросом (ссылка на нее будет добавлена в тег audio, ее исполнителя надо выбрать из вариантов)
     this.target = [...this.options][getRandomInteger(0, 2)];
-    this.task = `Кто исполняет эту песню?`; // ответ потом уберу, с ним удобнее тестировать
+    this.task = `Кто исполняет эту песню?`;
     this.correctAnswer = this.target.artist;
     this.audioLink = this.target.src;
   } else {

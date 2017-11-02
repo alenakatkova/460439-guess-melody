@@ -1,6 +1,6 @@
-import AbstractView from '../abstract-view';
-import logoMarkup from '../markup/logo-markup';
-import getRules from '../markup/get-rules-markup';
+import AbstractView from '../../abstract-view';
+import logoMarkup from '../../markup/logo-markup';
+import getRules from '../../markup/get-rules-markup';
 
 export default class StartScreenView extends AbstractView {
   get template() {

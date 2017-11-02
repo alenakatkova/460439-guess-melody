@@ -34,6 +34,12 @@ class AbstractView {
     }
     return this._element;
   }
+
+  /** Метод присваивает элементу значение null */
+
+  deleteElement() {
+    this._element = null;
+  }
 }
 
 export default AbstractView;
