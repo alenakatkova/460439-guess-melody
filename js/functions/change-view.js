@@ -6,14 +6,15 @@ const container = document.querySelector(`.main`);
 
 /**
  * Функция удаляет из контейнера ранее отрисованный экран и добавляет в него новый
- * @param {Node} screen - узел экрана игры, который необходимо добавить в контейнер
+ * @param {Node} view - узел экрана игры, который необходимо добавить в контейнер
  */
 
-const showScreen = (screen) => {
+const changeView = (view) => {
+
   if (container.firstChild) {
     container.removeChild(container.firstChild);
   }
-  container.appendChild(screen);
+  container.appendChild(view);
 };
 
-export default showScreen;
+export default changeView;

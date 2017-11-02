@@ -1,9 +1,7 @@
 import {GameData, initialState, stats} from '../data/game-data';
-import showArtistScreen from '../screens/artist-screen';
-import showGenreScreen from '../screens/genre-screen';
 import countPoints from './count-points';
-import showResultScreen from '../screens/result-screen';
 import {GameResults} from '../data/results';
+import App from '../application';
 
 /**
  * Функция переключает экраны игры
@@ -43,7 +41,7 @@ const showNextScreen = (state) => {
   const endGame = (typeOfResult) => {
     state = addScoreToAllResults(state);
     const game = new GameResults(state.score, state.mistakes, state.time);
-    showResultScreen(typeOfResult, state, game);
+    App.showResult(typeOfResult, state, game);
     resetGameData(state);
   };
 
@@ -58,11 +56,8 @@ const showNextScreen = (state) => {
   } else if (state.currentQuestionIndex === 10) {
     endGame(`win`);
 
-  } else if (tasks[state.currentQuestionIndex].type === `artist`) {
-    showArtistScreen(state);
-
-  } else if (tasks[state.currentQuestionIndex].type === `genre`) {
-    showGenreScreen(state);
+  } else {
+    App.showQuestion(state);
   }
 };
 
