@@ -17,7 +17,7 @@ const getDataForHash = (state) => {
 };
 
 const saveState = (state) => {
-  return JSON.stringify(getDataForHash(state));
+  return window.btoa(JSON.stringify(getDataForHash(state)));
 };
 
 const loadState = (dataString) => {
