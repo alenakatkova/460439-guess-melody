@@ -9,62 +9,90 @@ const ControllerId = {
   RESULT: `result`
 };
 
-const getDataForHash = (state) => {
-  return {
-    level: state.currentQuestionIndex + 1,
-    mistakes: state.mistakes,
-    time: state.time};
-};
-
-const saveState = (state) => {
-  return window.btoa(JSON.stringify(getDataForHash(state)));
-};
-
-const loadState = (dataString) => {
-  try {
-    return JSON.parse(dataString);
-  } catch (e) {
-    return initialState;
-  }
-};
-
 const routes = {
   [ControllerId.START]: startScreen,
   [ControllerId.QUESTION]: questionScreen,
   [ControllerId.RESULT]: resultScreen
 };
 
+/**
+ * Функция кодирует принимаемую строку
+ * @param {String} string
+ * @returns {String}
+ */
+
+function b64EncodeUnicode(string) {
+  return btoa(encodeURIComponent(string).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode(`0x` + p1);
+      }));
+}
+
+/**
+ * Функция декодирует принимаемую строку
+ * @param {String} string
+ * @returns {String}
+ */
+
+function b64DecodeUnicode(string) {
+  return decodeURIComponent(atob(string).split(``).map(function (c) {
+    return `%` + (`00` + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(``));
+}
+
+/**
+ * Функция кодирует состояние игры
+ * @param {Object} state
+ * @returns {String}
+ */
+
+const saveState = (state) => {
+  return b64EncodeUnicode(JSON.stringify(state));
+};
+
+/**
+ * Функция декодирует строку и получает из нее состояние игры
+ * @param dataString
+ * @return {Object} состояние игры
+ */
+
+const loadState = (dataString) => {
+  try {
+    return JSON.parse(b64DecodeUnicode(dataString));
+  } catch (e) {
+    return initialState;
+  }
+};
+
 export default class App {
   static init() {
     const hashChangeHandler = () => {
       const hashValue = location.hash.replace(`#`, ``);
-      const [id, data] = hashValue.split(`?`);
-      this.changeHash(id, data);
+      const [id, state] = hashValue.split(`=`);
+      this.changeHash(id, state);
     };
-    window.onHashChange = hashChangeHandler;
+    window.onhashchange = hashChangeHandler;
     hashChangeHandler();
   }
 
-  static changeHash(id, data) {
+  static changeHash(id, state) {
     const controller = routes[id];
+
     if (controller) {
-      controller.init(loadState(data));
+      controller.init(loadState(state));
     }
   }
 
   static showWelcome() {
-    startScreen.init();
     location.hash = ControllerId.START;
   }
 
   static showQuestion(state) {
-    questionScreen.init(state);
-    location.hash = `${ControllerId.QUESTION}?${saveState(state)}`;
+    location.hash = `${ControllerId.QUESTION}=${saveState(state)}`;
   }
 
-  static showResult(resultType, state, gameResults) {
-    resultScreen.init(resultType, state, gameResults);
-    location.hash = `${ControllerId.RESULT}?${saveState(state)}`;
+  static showResult(state) {
+    location.hash = `${ControllerId.RESULT}=${saveState(state)}`;
   }
 }
 

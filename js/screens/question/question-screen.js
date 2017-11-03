@@ -3,6 +3,7 @@ import changeView from '../../functions/change-view';
 import showNextScreen from '../../functions/show-next-screen';
 import getTimer from '../../functions/get-timer';
 import Answer from '../../data/answer';
+import {tasks} from '../../data/game-data';
 
 class QuestionScreen {
   constructor() {
@@ -17,7 +18,7 @@ class QuestionScreen {
   init(state) {
     this.state = state;
 
-    this.question = this.state.tasks[this.state.currentQuestionIndex];
+    this.question = tasks[this.state.currentQuestionIndex];
 
     this.view.init(this.question.type, this.question.options,
         this.question.audioLink, this.question.task, this.state.mistakes, this.state.time);
@@ -50,9 +51,7 @@ class QuestionScreen {
   onSendAnswerBtnClick(evt) {
     let isAnswerCorrect;
     let audio;
-
-    clearInterval(this.timer);
-
+    
     /** Собираем данные об ответе для разных типов вопросов */
 
     switch (this.question.type) {
@@ -115,6 +114,7 @@ class QuestionScreen {
     /** Показываем следующий экран (вопрос или результат) */
 
     showNextScreen(this.state);
+    clearInterval(this.timer);
   }
 }
 

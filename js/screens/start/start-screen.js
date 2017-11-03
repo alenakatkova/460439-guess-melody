@@ -9,6 +9,7 @@ class StartScreen {
   }
 
   init() {
+    this.view.init();
     changeView(this.view.element);
     this.newState = Object.assign({}, initialState);
     this.view.onPlayBtnClick = this.onPlayBtnClick.bind(this);
