@@ -3,6 +3,10 @@ import logoMarkup from '../../markup/logo-markup';
 import getRules from '../../markup/get-rules-markup';
 
 export default class StartScreenView extends AbstractView {
+  init() {
+    this.deleteElement();
+  }
+
   get template() {
     return `<section class="main main--welcome" id="start">
       ${logoMarkup}

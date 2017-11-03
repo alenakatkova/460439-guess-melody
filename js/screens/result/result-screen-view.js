@@ -6,6 +6,8 @@ export default class ResultScreenView extends AbstractView {
     this._resultType = resultType;
     this._mainContent = mainContent;
     this._extraContent = extraContent;
+
+    this.deleteElement();
   }
 
   get template() {

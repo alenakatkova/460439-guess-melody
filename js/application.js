@@ -1,17 +1,99 @@
 import startScreen from './screens/start/start-screen';
 import questionScreen from './screens/question/question-screen';
 import resultScreen from './screens/result/result-screen';
+import {initialState} from './data/game-data';
+
+const ControllerId = {
+  START: ``,
+  QUESTION: `question`,
+  RESULT: `result`
+};
+
+const routes = {
+  [ControllerId.START]: startScreen,
+  [ControllerId.QUESTION]: questionScreen,
+  [ControllerId.RESULT]: resultScreen
+};
+
+/**
+ * Функция кодирует принимаемую строку
+ * @param {String} string
+ * @returns {String}
+ */
+
+function b64EncodeUnicode(string) {
+  return btoa(encodeURIComponent(string).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode(`0x` + p1);
+      }));
+}
+
+/**
+ * Функция декодирует принимаемую строку
+ * @param {String} string
+ * @returns {String}
+ */
+
+function b64DecodeUnicode(string) {
+  return decodeURIComponent(atob(string).split(``).map(function (c) {
+    return `%` + (`00` + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(``));
+}
+
+/**
+ * Функция кодирует состояние игры
+ * @param {Object} state
+ * @returns {String}
+ */
+
+const saveState = (state) => {
+  return b64EncodeUnicode(JSON.stringify(state));
+};
+
+/**
+ * Функция декодирует строку и получает из нее состояние игры
+ * @param dataString
+ * @return {Object} состояние игры
+ */
+
+const loadState = (dataString) => {
+  try {
+    return JSON.parse(b64DecodeUnicode(dataString));
+  } catch (e) {
+    return initialState;
+  }
+};
 
 export default class App {
+  static init() {
+    const hashChangeHandler = () => {
+      const hashValue = location.hash.replace(`#`, ``);
+      const [id, state] = hashValue.split(`=`);
+      this.changeHash(id, state);
+    };
+    window.onhashchange = hashChangeHandler;
+    hashChangeHandler();
+  }
+
+  static changeHash(id, state) {
+    const controller = routes[id];
+
+    if (controller) {
+      controller.init(loadState(state));
+    }
+  }
+
   static showWelcome() {
-    startScreen.init();
+    location.hash = ControllerId.START;
   }
 
   static showQuestion(state) {
-    questionScreen.init(state);
+    location.hash = `${ControllerId.QUESTION}=${saveState(state)}`;
   }
 
-  static showResult(resultType, mainMessage, extraMessage) {
-    resultScreen.init(resultType, mainMessage, extraMessage);
+  static showResult(state) {
+    location.hash = `${ControllerId.RESULT}=${saveState(state)}`;
   }
 }
+
+App.init();

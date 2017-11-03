@@ -1,4 +1,4 @@
-import {GameData, initialState, stats} from '../data/game-data';
+import {GameData, tasks, initialState, stats} from '../data/game-data';
 import countPoints from './count-points';
 import {GameResults} from '../data/results';
 import App from '../application';
@@ -9,17 +9,16 @@ import App from '../application';
  */
 
 const showNextScreen = (state) => {
-  const tasks = state.tasks;
   state.answers = tasks.map((task) => {
     return task.playersAnswer;
   });
 
   /** Функция считает полученные игроком очки и добавляет их в массив с результатами других игроков */
 
-  const addScoreToAllResults = (latState) => {
-    latState.score = countPoints(latState.answers, GameData.MAX_ATTEMPTS - latState.mistakes);
-    stats.push(latState.score);
-    return latState;
+  const addScoreToAllResults = (lastState) => {
+    lastState.score = countPoints(lastState.answers, GameData.MAX_ATTEMPTS - lastState.mistakes);
+    stats.push(lastState.score);
+    return lastState;
   };
 
   /** Функция сбрасывает статистику игры */
@@ -35,26 +34,29 @@ const showNextScreen = (state) => {
   /**
    * Функция заканчивает игру: сохраняет набранные очки, генерирует объект с результатами игры,
    * показывает экран результата и обнуляет состояние игры
-   * @param typeOfResult
+   * @param {Object} lastState
    */
 
-  const endGame = (typeOfResult) => {
-    state = addScoreToAllResults(state);
-    const game = new GameResults(state.score, state.mistakes, state.time);
-    App.showResult(typeOfResult, state, game);
-    resetGameData(state);
+  const endGame = (lastState) => {
+    lastState = addScoreToAllResults(lastState);
+    lastState.gameResult = new GameResults(lastState.score, lastState.mistakes, lastState.time);
+    App.showResult(lastState);
+    resetGameData(lastState);
   };
 
   /** Опеределям, какой экран будет показан следующим */
 
   if (state.mistakes === GameData.MAX_ATTEMPTS) {
-    endGame(`attemptsOut`);
+    state.typeOfResult = `attemptsOut`;
+    endGame(state);
 
   } else if (state.time === 0) {
-    endGame(`timeOut`);
+    state.typeOfResult = `timeOut`;
+    endGame(state);
 
   } else if (state.currentQuestionIndex === 10) {
-    endGame(`win`);
+    state.typeOfResult = `win`;
+    endGame(state);
 
   } else {
     App.showQuestion(state);

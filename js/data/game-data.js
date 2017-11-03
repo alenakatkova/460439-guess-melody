@@ -11,7 +11,7 @@ const GameData = {
   QUESTIONS_TYPES: [`artist`, `genre`],
   AMOUNT_OF_QUESTIONS: 10,
   MAX_ATTEMPTS: 4,
-  MAX_TIME: 300,
+  MAX_TIME: 35,
   QUICK_TIME: 30,
   counting: {
     LOST_POINTS: 2,
@@ -25,10 +25,10 @@ const initialState = {
   time: GameData.MAX_TIME,
   currentQuestionIndex: 0,
   answers: [],
-  score: 0,
-  tasks: getQuestions()
+  score: 0
 };
 
+let tasks = getQuestions();
 let stats = [12, 2, 20, 8];
 
-export {GameData, initialState, stats};
+export {GameData, initialState, tasks, stats};

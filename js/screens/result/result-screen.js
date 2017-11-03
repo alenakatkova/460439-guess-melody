@@ -17,12 +17,12 @@ class ResultScreen {
    * @param gameResults
    */
 
-  init(resultType, state, gameResults) {
+  init(state) {
     const finishState = Object.assign({}, state);
-    const lastGameResults = Object.assign({}, gameResults);
+    const lastGameResults = Object.assign({}, state.gameResult);
 
     let extraMessage;
-    if (resultType === `win`) {
+    if (state.typeOfResult === `win`) {
       const quickAnswers = finishState.answers.filter((answer) => {
         return answer.time < GameData.QUICK_TIME;
       });
@@ -34,7 +34,7 @@ class ResultScreen {
 
     const mainMessage = generateFinishMessage(stats, lastGameResults);
 
-    this.view.init(resultType, mainMessage, extraMessage);
+    this.view.init(state.typeOfResult, mainMessage, extraMessage);
     changeView(this.view.element);
 
     this.view.onReplayBtnClick = this.onReplayBtnClick.bind(this);
