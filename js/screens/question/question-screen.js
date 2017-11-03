@@ -51,7 +51,7 @@ class QuestionScreen {
   onSendAnswerBtnClick(evt) {
     let isAnswerCorrect;
     let audio;
-    
+
     /** Собираем данные об ответе для разных типов вопросов */
 
     switch (this.question.type) {
