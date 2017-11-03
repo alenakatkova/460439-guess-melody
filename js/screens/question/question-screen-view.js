@@ -4,6 +4,12 @@ import getTaskMarkup from '../../markup/get-task-markup';
 import getAnswersMarkup from '../../markup/get-answers-markup';
 
 export default class QuestionScreenView2 extends AbstractView {
+  // constructor(questions) {
+  //   super();
+  //
+  //   this
+  // }
+
   init(type, options, link, task, mistakes, time) {
     this._type = type;
     this._options = options;

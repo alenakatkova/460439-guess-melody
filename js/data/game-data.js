@@ -5,13 +5,11 @@
  * {Array} stats массив с результатами прошлых игр для тестирования игры
  */
 
-import getQuestions from '../data/question';
-
 const GameData = {
   QUESTIONS_TYPES: [`artist`, `genre`],
   AMOUNT_OF_QUESTIONS: 10,
   MAX_ATTEMPTS: 4,
-  MAX_TIME: 35,
+  MAX_TIME: 300,
   QUICK_TIME: 30,
   counting: {
     LOST_POINTS: 2,
@@ -28,7 +26,6 @@ const initialState = {
   score: 0
 };
 
-let tasks = getQuestions();
 let stats = [12, 2, 20, 8];
-
-export {GameData, initialState, tasks, stats};
+let answers = [];
+export {GameData, initialState, stats, answers};
