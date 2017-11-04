@@ -1,4 +1,4 @@
-import {GameData, initialState, answers, stats} from '../data/game-data';
+import {GameData, initialState, answers} from '../data/game-data';
 import countPoints from './count-points';
 import {GameResults} from '../data/results';
 import App from '../application';
@@ -13,7 +13,6 @@ const showNextScreen = (state) => {
 
   const addScoreToAllResults = (lastState) => {
     lastState.score = countPoints(answers, GameData.MAX_ATTEMPTS - lastState.mistakes);
-    stats.push(lastState.score);
     return lastState;
   };
 
