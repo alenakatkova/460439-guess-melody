@@ -32,7 +32,7 @@ const playAudio = (players) => {
           btn.classList.remove(`player-control--pause`);
           btn.previousElementSibling.pause();
         });
-        
+
       } else {
         evt.target.classList.remove(`player-control--pause`);
         audio.pause();

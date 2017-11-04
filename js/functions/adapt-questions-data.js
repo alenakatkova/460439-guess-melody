@@ -1,9 +1,8 @@
 const getValue = (array) => {
-  let i = array.length;
   let artist;
-  while (i--) {
-    if (array[i].isCorrect === true) {
-      artist = array[i].title;
+  for (let item of array) {
+    if (item.isCorrect === true) {
+      artist = item.title;
     }
   }
   return artist;
