@@ -50,7 +50,6 @@ class QuestionScreen {
 
   onSendAnswerBtnClick(evt) {
     let isAnswerCorrect;
-    let audio;
 
     /** Собираем данные об ответе для разных типов вопросов */
 
@@ -60,7 +59,6 @@ class QuestionScreen {
           isAnswerCorrect = () => {
             return evt.target.alt === this.question.correctAnswer;
           };
-          audio = evt.target.dataset.link;
         }
         break;
 
@@ -71,10 +69,6 @@ class QuestionScreen {
 
         const playersAnswers = checkedCheckboxes.map((checkbox) => {
           return checkbox.dataset.genre;
-        });
-
-        audio = checkedCheckboxes.map((checkbox) => {
-          return checkbox.dataset.src;
         });
 
         isAnswerCorrect = () => {
@@ -92,7 +86,7 @@ class QuestionScreen {
 
     /** Формируем объект ответа на текущий вопрос */
 
-    const answer = new Answer(isAnswerCorrect(), timeSpent, audio);
+    const answer = new Answer(isAnswerCorrect(), timeSpent);
     answers.push(answer);
     /** Обновляем состояние */
 
