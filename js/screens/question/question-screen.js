@@ -102,7 +102,7 @@ class QuestionScreen {
       this.state.mistakes += 1;
     }
 
-    /** Сбрасываем значения формы */
+    /** Сбрасываем значения */
 
     if (this.question.type === `genre`) {
       this.view.checkboxes.forEach((checkbox) => {
@@ -111,10 +111,11 @@ class QuestionScreen {
       });
     }
 
+    clearInterval(this.timer);
+
     /** Показываем следующий экран (вопрос или результат) */
 
     showNextScreen(this.state);
-    clearInterval(this.timer);
   }
 }
 
