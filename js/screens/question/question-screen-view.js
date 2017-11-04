@@ -2,14 +2,9 @@ import AbstractView from '../../abstract-view';
 import getScreenMarkup from '../../markup/get-question-markup';
 import getTaskMarkup from '../../markup/get-task-markup';
 import getAnswersMarkup from '../../markup/get-answers-markup';
+import playAudio from '../../functions/play-audio';
 
 export default class QuestionScreenView2 extends AbstractView {
-  // constructor(questions) {
-  //   super();
-  //
-  //   this
-  // }
-
   init(type, options, link, task, mistakes, time) {
     this._type = type;
     this._options = options;
@@ -31,6 +26,9 @@ export default class QuestionScreenView2 extends AbstractView {
   bind() {
     this.minutes = this.element.querySelector(`.timer-value-mins`);
     this.seconds = this.element.querySelector(`.timer-value-secs`);
+
+    const players = this.element.querySelectorAll(`.player`);
+    playAudio(players);
 
     switch (this._type) {
       case `genre`:
@@ -70,3 +68,4 @@ export default class QuestionScreenView2 extends AbstractView {
     this.seconds.textContent = (timeLeft % 60) > 9 ? (timeLeft % 60) : `0` + (timeLeft % 60);
   }
 }
+

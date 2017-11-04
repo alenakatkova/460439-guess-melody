@@ -28,6 +28,12 @@ class QuestionScreen {
     this.timer = setInterval(this.onTimeChange.bind(this), 1000);
 
     this.view.onSendAnswerBtnClick = this.onSendAnswerBtnClick.bind(this);
+
+    // Автоматически включаем песню на экранах с вопросами про исполнителя
+    if (this.question.type === `artist`) {
+      const playAudioBtn = document.querySelector(`.player-control`);
+      playAudioBtn.click();
+    }
   }
 
   onTimeChange() {
