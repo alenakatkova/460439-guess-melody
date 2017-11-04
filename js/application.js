@@ -2,7 +2,7 @@ import startScreen from './screens/start/start-screen';
 import QuestionScreen from './screens/question/question-screen';
 import resultScreen from './screens/result/result-screen';
 import {initialState} from './data/game-data';
-import Loader from './data/questions-loader';
+import Loader from './loader';
 import adapt from './functions/adapt-questions-data';
 import changeView from './functions/change-view';
 import SplashScreen from './screens/splash-screen';
@@ -109,11 +109,20 @@ export default class App {
   }
 
   static showQuestion(state) {
-    location.hash = `${ControllerId.QUESTION}=${saveState(state)}`;
+    App.routes[ControllerId.QUESTION].init(state);
   }
 
   static showResult(state) {
-    location.hash = `${ControllerId.RESULT}=${saveState(state)}`;
+    if (state.typeOfResult === `win`) {
+      Loader.saveResults(state.gameResult).then(() => Loader.loadResults().then((data) => {
+        state.stats = data.map((it) => {
+          return it.score;
+        });
+        location.hash = `${ControllerId.RESULT}=${saveState(state)}`;
+      }));
+    } else {
+      location.hash = `${ControllerId.RESULT}=${saveState(state)}`;
+    }
   }
 }
 

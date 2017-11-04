@@ -21,7 +21,6 @@ const showNextScreen = (state) => {
 
   const resetGameData = (currentState) => {
     currentState = Object.assign({}, initialState);
-    answers.length = 0;
     return currentState;
   };
 
@@ -33,7 +32,8 @@ const showNextScreen = (state) => {
 
   const endGame = (lastState) => {
     lastState = addScoreToAllResults(lastState);
-    lastState.gameResult = new GameResults(lastState.score, lastState.mistakes, lastState.time);
+    lastState.gameResult = new GameResults(lastState.score, lastState.mistakes, GameData.MAX_TIME - lastState.time);
+    lastState.answers = answers;
     App.showResult(lastState);
     resetGameData(lastState);
   };

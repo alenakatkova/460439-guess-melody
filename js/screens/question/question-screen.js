@@ -28,6 +28,12 @@ class QuestionScreen {
     this.timer = setInterval(this.onTimeChange.bind(this), 1000);
 
     this.view.onSendAnswerBtnClick = this.onSendAnswerBtnClick.bind(this);
+
+    // Автоматически включаем песню на экранах с вопросами про исполнителя
+    if (this.question.type === `artist`) {
+      const playAudioBtn = document.querySelector(`.player-control`);
+      playAudioBtn.click();
+    }
   }
 
   onTimeChange() {
@@ -50,7 +56,6 @@ class QuestionScreen {
 
   onSendAnswerBtnClick(evt) {
     let isAnswerCorrect;
-    let audio;
 
     /** Собираем данные об ответе для разных типов вопросов */
 
@@ -60,7 +65,6 @@ class QuestionScreen {
           isAnswerCorrect = () => {
             return evt.target.alt === this.question.correctAnswer;
           };
-          audio = evt.target.dataset.link;
         }
         break;
 
@@ -71,10 +75,6 @@ class QuestionScreen {
 
         const playersAnswers = checkedCheckboxes.map((checkbox) => {
           return checkbox.dataset.genre;
-        });
-
-        audio = checkedCheckboxes.map((checkbox) => {
-          return checkbox.dataset.src;
         });
 
         isAnswerCorrect = () => {
@@ -92,7 +92,7 @@ class QuestionScreen {
 
     /** Формируем объект ответа на текущий вопрос */
 
-    const answer = new Answer(isAnswerCorrect(), timeSpent, audio);
+    const answer = new Answer(isAnswerCorrect(), timeSpent);
     answers.push(answer);
     /** Обновляем состояние */
 
@@ -102,7 +102,7 @@ class QuestionScreen {
       this.state.mistakes += 1;
     }
 
-    /** Сбрасываем значения формы */
+    /** Сбрасываем значения */
 
     if (this.question.type === `genre`) {
       this.view.checkboxes.forEach((checkbox) => {
@@ -111,10 +111,11 @@ class QuestionScreen {
       });
     }
 
+    clearInterval(this.timer);
+
     /** Показываем следующий экран (вопрос или результат) */
 
     showNextScreen(this.state);
-    clearInterval(this.timer);
   }
 }
 

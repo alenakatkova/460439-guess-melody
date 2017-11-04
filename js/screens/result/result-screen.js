@@ -1,7 +1,7 @@
 import ResultScreenView from './result-screen-view';
 import changeView from '../../functions/change-view';
 import generateFinishMessage from '../../functions/generate-finish-message';
-import {GameData, stats} from '../../data/game-data';
+import {GameData} from '../../data/game-data';
 import {resultScreenContent} from '../../data/results';
 import App from '../../application';
 
@@ -12,9 +12,7 @@ class ResultScreen {
 
   /**
    * Метод формирует и показывает экран с результатами игры
-   * @param resultType
    * @param state
-   * @param gameResults
    */
 
   init(state) {
@@ -26,13 +24,14 @@ class ResultScreen {
       const quickAnswers = finishState.answers.filter((answer) => {
         return answer.time < GameData.QUICK_TIME;
       });
+
       extraMessage = resultScreenContent.win.message1(Math.floor((GameData.MAX_TIME - finishState.time) / 60),
           (GameData.MAX_TIME - finishState.time) % 60, finishState.score, quickAnswers.length, finishState.mistakes);
     } else {
       extraMessage = ``;
     }
 
-    const mainMessage = generateFinishMessage(stats, lastGameResults);
+    const mainMessage = generateFinishMessage(finishState.stats, lastGameResults);
 
     this.view.init(state.typeOfResult, mainMessage, extraMessage);
     changeView(this.view.element);

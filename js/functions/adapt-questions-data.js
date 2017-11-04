@@ -16,8 +16,8 @@ const adapt = (data) => {
     adapted[i] = {
       type: data[it].type,
       playersAnswer: null,
-      task: data[it].question,
-      options: data[it].answers
+      options: data[it].answers,
+      task: data[it].question
     };
 
     if (data[it].type === `genre`) {

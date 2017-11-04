@@ -22,7 +22,6 @@ const initialState = {
   mistakes: 0,
   time: GameData.MAX_TIME,
   currentQuestionIndex: 0,
-  answers: [],
   score: 0
 };
 
