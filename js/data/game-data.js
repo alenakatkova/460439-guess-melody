@@ -25,6 +25,6 @@ const initialState = {
   score: 0
 };
 
-let stats = [12, 2, 20, 8];
 let answers = [];
-export {GameData, initialState, stats, answers};
+
+export {GameData, initialState, answers};
