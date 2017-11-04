@@ -1,4 +1,4 @@
-import {GameData, tasks, initialState, stats} from '../data/game-data';
+import {GameData, initialState, answers, stats} from '../data/game-data';
 import countPoints from './count-points';
 import {GameResults} from '../data/results';
 import App from '../application';
@@ -9,14 +9,10 @@ import App from '../application';
  */
 
 const showNextScreen = (state) => {
-  state.answers = tasks.map((task) => {
-    return task.playersAnswer;
-  });
-
   /** Функция считает полученные игроком очки и добавляет их в массив с результатами других игроков */
 
   const addScoreToAllResults = (lastState) => {
-    lastState.score = countPoints(lastState.answers, GameData.MAX_ATTEMPTS - lastState.mistakes);
+    lastState.score = countPoints(answers, GameData.MAX_ATTEMPTS - lastState.mistakes);
     stats.push(lastState.score);
     return lastState;
   };
@@ -25,9 +21,7 @@ const showNextScreen = (state) => {
 
   const resetGameData = (currentState) => {
     currentState = Object.assign({}, initialState);
-    for (let i = 0; i < 10; i++) {
-      tasks[i].playersAnswer = null;
-    }
+    answers.length = 0;
     return currentState;
   };
 

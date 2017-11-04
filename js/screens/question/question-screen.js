@@ -3,11 +3,12 @@ import changeView from '../../functions/change-view';
 import showNextScreen from '../../functions/show-next-screen';
 import getTimer from '../../functions/get-timer';
 import Answer from '../../data/answer';
-import {tasks} from '../../data/game-data';
+import {answers} from '../../data/game-data';
 
 class QuestionScreen {
-  constructor() {
-    this.view = new QuestionScreenView2();
+  constructor(questions) {
+    this.questions = questions;
+    this.view = new QuestionScreenView2(questions);
   }
 
   /**
@@ -18,8 +19,7 @@ class QuestionScreen {
   init(state) {
     this.state = state;
 
-    this.question = tasks[this.state.currentQuestionIndex];
-
+    this.question = this.questions[this.state.currentQuestionIndex];
     this.view.init(this.question.type, this.question.options,
         this.question.audioLink, this.question.task, this.state.mistakes, this.state.time);
     changeView(this.view.element);
@@ -92,8 +92,8 @@ class QuestionScreen {
 
     /** Формируем объект ответа на текущий вопрос */
 
-    this.question.playersAnswer = new Answer(isAnswerCorrect(), timeSpent, audio);
-
+    const answer = new Answer(isAnswerCorrect(), timeSpent, audio);
+    answers.push(answer);
     /** Обновляем состояние */
 
     this.state.currentQuestionIndex += 1;
@@ -118,4 +118,4 @@ class QuestionScreen {
   }
 }
 
-export default new QuestionScreen();
+export default QuestionScreen;

@@ -4,9 +4,9 @@ const getAnswersMarkup = (type, options) => {
       return `<div class="main-answer-wrapper">
           <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}"/>
           <label class="main-answer" for="answer-${index}">
-            <img class="main-answer-preview" src="http://placehold.it/134x134"
-                 alt="${option.artist}" data-link="${option.src}" width="134" height="134">
-            ${option.artist}
+            <img class="main-answer-preview" src="${option.image.url}"
+                 alt="${option.title}" width="134" height="134">
+            ${option.title}
           </label>
         </div>`;
     } else {
